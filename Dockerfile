@@ -15,10 +15,6 @@ FROM base as build
 COPY package-lock.json package.json ./
 RUN npm ci --include=dev
 
-# Generate Prisma Client
-COPY prisma .
-RUN npx prisma generate
-
 # Copy application code
 COPY . .
 RUN npm run build

@@ -1,14 +1,10 @@
 import { type MetaFunction, json, type LoaderFunctionArgs } from '@remix-run/node';
-import { Link, Outlet, useLoaderData } from '@remix-run/react';
+import { Link, Outlet } from '@remix-run/react';
 import { useState } from 'react';
 import Overlay from '~/components/Overlay.tsx';
-import { authenticator } from '~/services/auth.server.ts';
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const user = await authenticator.isAuthenticated(request, {
-    failureRedirect: '/welcome',
-  });
-  return json(user);
+  return json({});
 }
 
 export const meta: MetaFunction = () => {
@@ -16,8 +12,6 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-  const user = useLoaderData<typeof loader>();
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -42,7 +36,7 @@ export default function Index() {
             <h1 className="text-2xl font-bold mx-6">8bit stack</h1>
           </Link>
           <button className="px-6 h-full" onClick={() => setIsMenuOpen(true)}>
-            <h2>{user.name}</h2>
+            <h2>anonymous</h2>
           </button>
         </nav>
         <div className="pt-16">

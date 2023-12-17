@@ -4,9 +4,7 @@ services:
     build: .
     environment:
       - HOST=0.0.0.0
-      - DATABASE_URL
       - SESSION_SECRET
-      - APP_URL
     ports:
       - 3000:3000
       - 5555:5555
@@ -14,9 +12,7 @@ services:
     image: node:20.10.0
     environment:
       - HOST=0.0.0.0
-      - DATABASE_URL
       - SESSION_SECRET
-      - APP_URL
     ports:
       - 3000:3000
       - 3001:3001
@@ -31,9 +27,7 @@ services:
     image: mcr.microsoft.com/playwright:v1.40.1-jammy
     environment:
       - HOST=0.0.0.0
-      - DATABASE_URL
       - SESSION_SECRET
-      - APP_URL
     volumes:
       - .:/8bit-stack
       - node_modules:/8bit-stack/node_modules
