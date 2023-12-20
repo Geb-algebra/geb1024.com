@@ -1,7 +1,6 @@
 import { type MetaFunction, json, type LoaderFunctionArgs } from '@remix-run/node';
 import { Link, Outlet } from '@remix-run/react';
-import { useState } from 'react';
-import Overlay from '~/components/Overlay.tsx';
+import GebMoon from '~/components/GebMoon.tsx';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   return json({});
@@ -11,38 +10,50 @@ export const meta: MetaFunction = () => {
   return [{ title: 'New Remix App' }, { name: 'description', content: 'Welcome to Remix!' }];
 };
 
-export default function Index() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+function NavItem(props: { name: string; href: string }) {
   return (
-    <>
-      <div className="w-full h-screen">
-        <Overlay isShown={isMenuOpen} setIsShown={setIsMenuOpen}>
-          <div className="absolute right-6 top-20 w-64 bg-white border border-gray-300 rounded-lg overflow-hidden z-10">
-            <Link
-              to="/settings"
-              onClick={() => setIsMenuOpen(false)}
-              className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-            >
-              Settings
-            </Link>
-            <Link to="/logout" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
-              Log Out
-            </Link>
-          </div>
-        </Overlay>
-        <nav className="fixed w-full h-16 flex justify-between items-center bg-white border-b border-gray-300">
-          <Link to="/">
-            <h1 className="text-2xl font-bold mx-6">8bit stack</h1>
+    <Link to={props.href} className="text-accent-wine">
+      {props.name}
+    </Link>
+  );
+}
+
+export default function Index() {
+  return (
+    <div className="bg-base-white w-full h-screen">
+      <div className="fixed w-full h-screen flex">
+        <aside className="w-42 pl-2 pt-2">
+          <Link
+            to="/"
+            className="block w-36 h-36 pl-0.5 pt-0.5 bg-geb-blue rounded-bl-[64px_24px] rounded-tr-[24px_64px] border-base-white border-double border-8"
+          >
+            <GebMoon color="#02ac8e" />
           </Link>
-          <button className="px-6 h-full" onClick={() => setIsMenuOpen(true)}>
-            <h2>anonymous</h2>
-          </button>
+          <div className="w-20 p-4 h-fit border-geb-blue rounded-bl-[64px_24px] border-b-0 border-l-8 border-double">
+            <div className="w-16 h-16 my-8 rounded-full bg-gray-400">GitHub</div>
+            <div className="w-16 h-16 my-8 rounded-full bg-gray-400">Twitter</div>
+            <div className="w-16 h-16 my-8 rounded-full bg-gray-400">LinkedIn</div>
+          </div>
+        </aside>
+        <nav className="w-full h-28 flex justify-stretch item-start py-2">
+          <h1 className="px-6 border-t-8 border-double border-geb-blue flex-1 h-16 flex items-center text-3xl font-bold font-serif text-geb-blue">
+            Geb's Lab
+          </h1>
+
+          <div className="h-16 px-16 mr-4 flex gap-6 items-center border-t-8 border-r-0 border-double border-geb-blue rounded-tr-[24px_64px]">
+            <NavItem name="Articles" href="/articles" />
+            <NavItem name="About Me" href="/about" />
+            <NavItem name="Contact" href="/contact" />
+          </div>
         </nav>
-        <div className="pt-16">
-          <Outlet />
-        </div>
       </div>
-    </>
+      <div className="ml-48">
+        <main className="mr-6 pt-28 px-auto">
+          <div className="bg-suite-sepia rounded-lg min-h-full">
+            <Outlet />
+          </div>
+        </main>
+      </div>
+    </div>
   );
 }
