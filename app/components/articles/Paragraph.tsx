@@ -8,6 +8,7 @@ export default function Paragraph(props: { summarized: boolean; children?: React
   let keyline: React.ReactNode[];
   let content: React.ReactNode[];
 
+  // manipulating Children is not recommended.
   const children = React.Children.toArray(props.children);
   // find the index of the first child that is a string with a newline
   const index = children.findIndex((child) => {
