@@ -21,7 +21,7 @@ function NavItem(props: { name: string; href: string }) {
 export default function Index() {
   return (
     <div className="bg-base-white w-full h-screen">
-      <div className="fixed w-full h-screen flex">
+      <div className="fixed w-full flex h-20">
         <aside className="w-42 pl-2 pt-2">
           <Link
             to="/"
@@ -35,8 +35,8 @@ export default function Index() {
             <div className="w-16 h-16 my-8 rounded-full bg-gray-400">LinkedIn</div>
           </div>
         </aside>
-        <nav className="w-full h-28 flex justify-stretch item-start py-2">
-          <h1 className="px-6 border-t-8 border-double border-geb-blue flex-1 h-16 flex items-center text-3xl font-bold font-serif text-geb-blue">
+        <nav className="w-full h-20 flex justify-stretch item-start py-2 backdrop-blur-xl bg-base-white bg-opacity-50">
+          <h1 className="px-6 border-t-8 border-double border-geb-blue flex-1 h-16 flex items-center text-3xl font-bold text-geb-blue">
             Geb's Lab
           </h1>
 
@@ -48,10 +48,8 @@ export default function Index() {
         </nav>
       </div>
       <div className="ml-48">
-        <main className="mr-6 pt-28 px-auto">
-          <div className="bg-suite-sepia rounded-lg min-h-full">
-            <Outlet />
-          </div>
+        <main className="mr-6 pt-28">
+          <Outlet />
         </main>
       </div>
     </div>

@@ -1,0 +1,139 @@
+---
+title: "vitestの機能だけでfetchをmockする方法"
+emoji: "⚡️"
+type: "tech" # tech: 技術記事 / idea: アイデア
+topics: [vitest, vite, javascript, typescript]
+published: true
+---
+
+`vi-fetch`というパッケージを使ってみたがうまく動かなかったのと、このためだけにパッケージ入れたくないので、vitestのmock機能を直接使ってモッキングしたい。
+
+# 結論
+
+fetchをmockingするには、以下をfetch実行前に書けば良い。
+
+```typescript
+import { vi } from 'vitest'
+
+
+describe('...', () => {
+  let mockedFetch: SpyInstance;
+  beforeEach(async () => {
+    mockedFetch = vi
+      .spyOn(global, 'fetch')
+      .mockImplementation(async () => new Response('{ "key": "value" }', { status: 200 }));
+  });
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+  // write tests below...
+});
+```
+
+`global.fetch`にspyを設定し、適当な`Promise<Response>`を返すモック関数を実装している。
+
+もちろん、responseのボディ`'{ "key": "value" }'`やステータスは自由に設定して良い。
+
+# 実際に動かしてみる
+
+以下の関数に対してfetchをmockしたテストを書いてみる。
+
+```typescript
+// script.ts
+export const functionWithFetch = async () => {
+  const res = await fetch('https://foo.bar.baz');
+  return res
+}
+```
+
+テストは以下。
+
+```typescript
+describe('functionWithFetch', () => {
+  let mockedFetch: SpyInstance;
+  beforeEach(async () => {
+    mockedFetch = vi
+      .spyOn(global, 'fetch')
+      .mockImplementation(async () => new Response('{ "key": "value" }', { status: 200 }));
+  });
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+  it('should things done rignt', async () => {
+    const res = await functionWithFetch();
+    expect(res.status).toEqual(200);
+    expect(await res.json()).toEqual({ key: 'value' });
+  });
+});
+```
+
+実行するとパスする。すなわち、mockした返り値 (ステータス200, ボディ`{ key: 'value' }`) が返ってきていることが確認できる。
+
+```sh
+ DEV  v0.24.5 /code
+
+ ✓ script.test.ts (1)
+
+Test Files  1 passed (1)
+     Tests  1 passed (1)
+```
+
+試しにmocking部分をコメントアウトして実行すると、notfoundエラーが出る。
+
+```sh
+ DEV  v0.24.5 /code
+
+ ❯ script.test.ts (1)
+   ❯ functionWithFetch (1)
+     × should things done rignt
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  script.test.ts > functionWithFetch > should things done rignt
+FetchError: request to https://foo.bar.baz/ failed, reason: getaddrinfo ENOTFOUND foo.bar.baz
+ ❯ ClientRequest.<anonymous> node_modules/@remix-run/web-fetch/src/fetch.js:111:11
+ ❯ ClientRequest.emit node:events:513:28
+ ❯ TLSSocket.socketErrorListener node:_http_client:494:9
+ ❯ TLSSocket.emit node:events:513:28
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: {
+  "code": "ENOTFOUND",
+  "errno": "ENOTFOUND",
+  "erroredSysCall": "getaddrinfo",
+}
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+Test Files  1 failed (1)
+     Tests  1 failed (1)
+```
+
+# 余談：vi.fn()を使う方法
+
+実際に試した結果、mockする方法は`vi.spyOn()`を使う方法と`vi.fn()`を使う方法の2種類あった。「結論」で紹介しなかった`vi.fn()`を使う方法は以下：
+
+```typescript
+import { vi } from 'vitest'
+
+
+describe('...', () => {
+  beforeEach(async () => {
+    global.fetch = vi.fn().mockImplementation(
+      async () => new Response('{ "key": "value" }', { status: 200 })
+    );
+  });
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+  // write tests below...
+});
+```
+
+**ただしこの方法には、fetchの挙動を元に戻せないという問題点がある。**`vi.restoreAllMocks();`を実行すると、`spyOn()`でmockingした場合は`fetch`が元の挙動に戻るが、`fn()`でmockingした場合は元の挙動に戻らず、常に`undefined`を返す実装に変化してしまう。そのため、テスト中にmockingしたfetchとオリジナルのfetchを両方使いたい場合には、この方法は採用できない。
+
+「常に`undefined`を返す実装に変化してしまう」という挙動については、公式ドキュメントにも記述してある。
+
+> Note that restoring mock from vi.fn() will set implementation to an empty function that returns undefined.
+> [https://vitest.dev/api/mock.html#mockrestore](https://vitest.dev/api/mock.html#mockrestore)
