@@ -21,7 +21,7 @@ function NavItem(props: { name: string; href: string }) {
 export default function Index() {
   return (
     <div className="bg-base-white w-full h-screen">
-      <div className="fixed w-full flex h-20">
+      <div className="fixed w-full flex h-20 z-50">
         <aside className="w-42 pl-2 pt-2">
           <Link
             to="/"
