@@ -1,5 +1,4 @@
 import React from 'react';
-import invariant from 'tiny-invariant';
 
 // display keyline (the first sentence) and the rest with different colors
 // the rest can be hidden in order to summarize the article

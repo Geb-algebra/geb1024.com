@@ -1,142 +1,67 @@
 ---
-title: "vitestの機能だけでfetchをmockする方法"
+title: 昨日の試合の全打席を振り返り
 ---
 
 import image from './sampleimage.png'
 
-`vi-fetch`というパッケージを使ってみたがうまく動かなかったのと、このためだけにパッケージ入れたくないので、vitestのmock機能を直接使ってモッキングしたい。
-試しに段落の2文目以降を書いてみる。
-3文目も書いてみる。
-**ボールド**も書いてみる。
+私は日本のプロ野球でホームランバッターとして活躍しており、昨日の試合では重要な役割を果たしました。
+このブログでは、昨日の試合の各打席を振り返り、その重要な瞬間を分析します。
 
-<img src={image} />
-
-# 結論
-
-fetchをmockingするには、以下をfetch実行前に書けば良い。
-
-```typescript
-import { vi } from 'vitest'
+<img alt="homerun" src={image} />
 
 
-describe('...', () => {
-  let mockedFetch: SpyInstance;
-  beforeEach(async () => {
-    mockedFetch = vi
-      .spyOn(global, 'fetch')
-      .mockImplementation(async () => new Response('{ "key": "value" }', { status: 200 }));
-  });
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-  // write tests below...
-});
-```
-
-`global.fetch`にspyを設定し、適当な`Promise<Response>`を返すモック関数を実装している。
-
-もちろん、responseのボディ`'{ "key": "value" }'`やステータスは自由に設定して良い。
-
-# 実際に動かしてみる
-
-以下の関数に対してfetchをmockしたテストを書いてみる。
-
-```typescript
-// script.ts
-export const functionWithFetch = async () => {
-  const res = await fetch('https://foo.bar.baz');
-  return res
-}
-```
-
-テストは以下。
-
-```typescript
-describe('functionWithFetch', () => {
-  let mockedFetch: SpyInstance;
-  beforeEach(async () => {
-    mockedFetch = vi
-      .spyOn(global, 'fetch')
-      .mockImplementation(async () => new Response('{ "key": "value" }', { status: 200 }));
-  });
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-  it('should things done rignt', async () => {
-    const res = await functionWithFetch();
-    expect(res.status).toEqual(200);
-    expect(await res.json()).toEqual({ key: 'value' });
-  });
-});
-```
-
-実行するとパスする。すなわち、mockした返り値 (ステータス200, ボディ`{ key: 'value' }`) が返ってきていることが確認できる。
-
-```sh
- DEV  v0.24.5 /code
-
- ✓ script.test.ts (1)
-
-Test Files  1 passed (1)
-     Tests  1 passed (1)
-```
-
-試しにmocking部分をコメントアウトして実行すると、notfoundエラーが出る。
-
-```sh
- DEV  v0.24.5 /code
-
- ❯ script.test.ts (1)
-   ❯ functionWithFetch (1)
-     × should things done rignt
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
-
- FAIL  script.test.ts > functionWithFetch > should things done rignt
-FetchError: request to https://foo.bar.baz/ failed, reason: getaddrinfo ENOTFOUND foo.bar.baz
- ❯ ClientRequest.<anonymous> node_modules/@remix-run/web-fetch/src/fetch.js:111:11
- ❯ ClientRequest.emit node:events:513:28
- ❯ TLSSocket.socketErrorListener node:_http_client:494:9
- ❯ TLSSocket.emit node:events:513:28
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
-Serialized Error: {
-  "code": "ENOTFOUND",
-  "errno": "ENOTFOUND",
-  "erroredSysCall": "getaddrinfo",
-}
+# 第1打席：力強いスタート
+第1打席では、**カウント2-1**からの変化球を見極め、ライト方向への堅実なヒットを放ちました。
+この打席での集中力が、後の成功への礎を築いたと言えるでしょう。
 
 
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
-
-Test Files  1 failed (1)
-     Tests  1 failed (1)
-```
-
-# 余談：vi.fn()を使う方法
-
-実際に試した結果、mockする方法は`vi.spyOn()`を使う方法と`vi.fn()`を使う方法の2種類あった。「結論」で紹介しなかった`vi.fn()`を使う方法は以下：
-
-```typescript
-import { vi } from 'vitest'
+## ポイント分析
+この打席の重要なポイントは、ピッチャーの球威とコントロールを見極めることでした。
+初球からの集中力が、良い結果につながりました。
 
 
-describe('...', () => {
-  beforeEach(async () => {
-    global.fetch = vi.fn().mockImplementation(
-      async () => new Response('{ "key": "value" }', { status: 200 })
-    );
-  });
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-  // write tests below...
-});
-```
+# 第2打席：チャンスを逃す
+第2打席では、残念ながらチャンスを生かすことができませんでした。
+ランナーが2塁にいる中、*アウトサイドの球に手を出し*、簡単なフライアウトに終わりました。
 
-**ただしこの方法には、fetchの挙動を元に戻せないという問題点がある。**`vi.restoreAllMocks();`を実行すると、`spyOn()`でmockingした場合は`fetch`が元の挙動に戻るが、`fn()`でmockingした場合は元の挙動に戻らず、常に`undefined`を返す実装に変化してしまう。そのため、テスト中にmockingしたfetchとオリジナルのfetchを両方使いたい場合には、この方法は採用できない。
 
-「常に`undefined`を返す実装に変化してしまう」という挙動については、公式ドキュメントにも記述してある。
+## ポイント分析
+ここでは、もっと冷静に相手の配球を見極めることが必要でした。
+次の打席では、この経験を活かすことが重要です。
 
-> Note that restoring mock from vi.fn() will set implementation to an empty function that returns undefined.
-> [https://vitest.dev/api/mock.html#mockrestore](https://vitest.dev/api/mock.html#mockrestore)
+
+# 第3打席：見事なホームラン
+第3打席で、私は見事なホームランを放ちました。
+インコース高めの速球を完璧に捉え、左翼席への大きな一発となりました。
+
+
+## ポイント分析
+この打席の成功の秘訣は、インサイドの球への強い意識と、タイミングの正確さでした。
+このホームランは、チームに大きな勢いをもたらしました。
+
+
+# 第4打席：粘り強い対応
+第4打席では、粘り強い対応を見せました。
+何度もファウルで粘り、最終的には*歩かせてもらいました*。
+
+
+## ポイント分析
+ピッチャーとの駆け引きがこの打席の鍵でした。
+ファウルで粘ることで、ピッチャーの精神的な圧力を高めることができました。
+
+
+# 最終打席：メンタルの重要性
+最終打席では、メンタルの切り替えの重要性を実感しました。
+内角の厳しい球に対応し、センター前へのヒットを放つことができました。
+
+
+## ポイント分析
+打席ごとのメンタルの切り替えが、成功への鍵です。
+前の失敗を忘れ、新しいチャンスに集中することが重要でした。
+
+
+> "毎打席、最高のパフォーマンスを発揮するためには、メンタルの切り替えが不可欠です。
+" - 監督のコメント
+
+昨日の試合は、個々の打席での小さな成功と失敗が積み重なり、最終的な結果に繋がりました。
+今後も、一打席一打席を大切にし、チームの勝利に貢献していきます。
