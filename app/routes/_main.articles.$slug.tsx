@@ -1,6 +1,6 @@
 import React from 'react';
 import { bundlePost } from '~/services/mdx.server.ts';
-import { getMDXComponent } from 'mdx-bundler/client';
+import { getMDXComponent } from 'mdx-bundler/client/index.js';
 import { type LoaderFunctionArgs, json } from '@remix-run/node';
 
 import Switch from '~/components/Switch.tsx';
