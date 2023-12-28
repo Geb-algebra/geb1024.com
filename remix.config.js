@@ -4,5 +4,4 @@ export default {
   serverModuleFormat: 'esm',
   serverDependenciesToBundle: [],
   tailwind: true,
-  browserNodeBuiltinsPolyfill: { modules: { crypto: true } },
 };
