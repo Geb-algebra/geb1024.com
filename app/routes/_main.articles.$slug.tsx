@@ -9,15 +9,31 @@ import Header2 from '~/components/articles/Header2.tsx';
 import Header3 from '~/components/articles/Header3.tsx';
 import Paragraph from '~/components/articles/Paragraph.tsx';
 import Quote from '~/components/articles/Quote.tsx';
-import { useLoaderData } from '@remix-run/react';
+import { isRouteErrorResponse, useLoaderData, useRouteError } from '@remix-run/react';
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const { code, frontmatter } = await bundlePost('example');
-  return json({ code, frontmatter });
+export async function loader({ request, params }: LoaderFunctionArgs) {
+  try {
+    const { code, frontmatter } = await bundlePost(params.slug);
+    return json({ code, frontmatter });
+  } catch (e) {
+    // Errors thrown when a file is not found actually have a code property but Error type doesn't
+    if (e instanceof Error && (e as any).code === 'ENOENT') {
+      throw new Response(null, {
+        status: 404,
+        statusText: 'Not Found',
+      });
+    }
+    throw e;
+  }
 }
 
 export default function Article(props: {}) {
-  const { code, frontmatter } = useLoaderData<typeof loader>();
+  const loaderData = useLoaderData<typeof loader>();
+  if (loaderData.status === 404) {
+    return <h1>404 - Not Found</h1>;
+  }
+
+  const { code, frontmatter } = loaderData;
   const Component = React.useMemo(() => getMDXComponent(code), [code]);
   const [summarized, setSummarized] = React.useState(false);
   return (
@@ -41,5 +57,19 @@ export default function Article(props: {}) {
         }}
       />
     </>
+  );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+  return (
+    <div role="alert">
+      <p>Something went wrong:</p>
+      <pre>
+        {isRouteErrorResponse(error) && error instanceof Response
+          ? `${error.status} ${error.statusText}`
+          : 'Unknown Error'}
+      </pre>
+    </div>
   );
 }

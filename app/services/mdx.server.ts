@@ -1,8 +1,8 @@
 import { bundleMDX } from 'mdx-bundler';
 import rehypePrettyCode from 'rehype-pretty-code';
 
-export async function bundlePost(postName: string) {
-  const path = `${process.cwd()}/app/routes/_main.articles.${postName}`;
+export async function bundlePost(slug: string) {
+  const path = `${process.cwd()}/app/articles/${slug}`;
   return await bundleMDX({
     file: path + '/page.mdx',
     cwd: path,
