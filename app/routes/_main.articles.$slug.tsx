@@ -2,6 +2,7 @@ import React from 'react';
 import { bundlePost } from '~/services/mdx.server.ts';
 import { getMDXComponent } from 'mdx-bundler/client/index.js';
 import { type LoaderFunctionArgs, json } from '@remix-run/node';
+import type { MetaFunction } from '@remix-run/react';
 
 import Switch from '~/components/Switch.tsx';
 import Header1 from '~/components/articles/Header1.tsx';
@@ -27,11 +28,15 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   }
 }
 
+export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
+  if (isRouteErrorResponse(error)) {
+    return [{ title: 'Not Found' }, { description: 'The page you requested could not be found.' }];
+  }
+  return [{ title: data?.frontmatter.title }, { description: data?.frontmatter.description }];
+};
+
 export default function Article(props: {}) {
   const loaderData = useLoaderData<typeof loader>();
-  if (loaderData.status === 404) {
-    return <h1>404 - Not Found</h1>;
-  }
 
   const { code, frontmatter } = loaderData;
   const Component = React.useMemo(() => getMDXComponent(code), [code]);
@@ -66,9 +71,7 @@ export function ErrorBoundary() {
     <div role="alert">
       <p>Something went wrong:</p>
       <pre>
-        {isRouteErrorResponse(error) && error instanceof Response
-          ? `${error.status} ${error.statusText}`
-          : 'Unknown Error'}
+        {isRouteErrorResponse(error) ? `${error.status} ${error.statusText}` : 'Unknown Error'}
       </pre>
     </div>
   );
