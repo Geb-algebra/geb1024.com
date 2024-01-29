@@ -13,16 +13,16 @@ import Quote from '~/components/articles/Quote.tsx';
 import { isRouteErrorResponse, useLoaderData, useRouteError } from '@remix-run/react';
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
+  if (!params.slug) {
+    throw new Response(null, { status: 404, statusText: 'Not Found' });
+  }
   try {
     const { code, frontmatter } = await bundlePost(params.slug);
     return json({ code, frontmatter });
   } catch (e) {
     // Errors thrown when a file is not found actually have a code property but Error type doesn't
     if (e instanceof Error && (e as any).code === 'ENOENT') {
-      throw new Response(null, {
-        status: 404,
-        statusText: 'Not Found',
-      });
+      throw new Response(null, { status: 404, statusText: 'Not Found' });
     }
     throw e;
   }
@@ -71,7 +71,9 @@ export function ErrorBoundary() {
     <div role="alert">
       <p>Something went wrong:</p>
       <pre>
-        {isRouteErrorResponse(error) ? `${error.status} ${error.statusText}` : 'Unknown Error'}
+        {isRouteErrorResponse(error)
+          ? `${(error as any).status} ${(error as any).statusText}`
+          : 'Unknown Error'}
       </pre>
     </div>
   );

@@ -9,7 +9,6 @@ export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: stylesheet },
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
   { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
-  { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
   {
     rel: 'stylesheet',
     href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap',
@@ -19,7 +18,7 @@ export const links: LinksFunction = () => [
 
 function App() {
   return (
-    <html lang="en" className="bg-base-white">
+    <html lang="en" className="bg-base-color">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />

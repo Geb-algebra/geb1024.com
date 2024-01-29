@@ -10,6 +10,8 @@ export default {
         'accent-wine': '#a1251a',
         'twilight-gray': '#dcd5c8',
         'sharp-gray': '#a2a2ad',
+        'base-color': '#dcd5c8',
+        'sub-color': '#a2a2ad',
       },
       fontFamily: {
         sans: ['"Ubuntu"', '"Noto Sans JP"', 'sans-serif'],
