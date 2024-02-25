@@ -19,9 +19,9 @@ services:
       - 5555:5555
       - 8080:8080 # remix DevTools websocket server
     volumes:
-      - .:/8bit-stack
-      - node_modules:/8bit-stack/node_modules
-    working_dir: /8bit-stack
+      - .:/geb1024com
+      - node_modules:/geb1024com/node_modules
+    working_dir: /geb1024com
     command: bash
   validate:
     image: mcr.microsoft.com/playwright:v1.40.1-jammy
@@ -29,15 +29,15 @@ services:
       - HOST=0.0.0.0
       - SESSION_SECRET
     volumes:
-      - .:/8bit-stack
-      - node_modules:/8bit-stack/node_modules
+      - .:/geb1024com
+      - node_modules:/geb1024com/node_modules
     ports:
       - 3000:3000
       - 3001:3001
       - 5555:5555
       - 8080:8080 # remix DevTools websocket server
       - 9323:9323 # playwright reporter
-    working_dir: /8bit-stack
+    working_dir: /geb1024com
     command: npm run validate
 volumes:
   node_modules:

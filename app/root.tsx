@@ -1,11 +1,8 @@
-import { cssBundleHref } from '@remix-run/css-bundle';
 import type { LinksFunction } from '@remix-run/node';
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
-import stylesheet from '~/styles/tailwind.css';
-import rdtStylesheet from 'remix-development-tools/index.css';
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
+import stylesheet from '~/styles/tailwind.css?url';
 
 export const links: LinksFunction = () => [
-  ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
   { rel: 'stylesheet', href: stylesheet },
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
   { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
@@ -13,7 +10,6 @@ export const links: LinksFunction = () => [
     rel: 'stylesheet',
     href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap',
   },
-  ...(process.env.NODE_ENV === 'development' ? [{ rel: 'stylesheet', href: rdtStylesheet }] : []),
 ];
 
 function App() {
@@ -29,16 +25,9 @@ function App() {
         <Outlet />
         <ScrollRestoration />
         <Scripts />
-        <LiveReload />
       </body>
     </html>
   );
 }
 
-let AppExport = App;
-// This imports the dev tools only if you're in development
-if (process.env.NODE_ENV === 'development') {
-  const { withDevTools } = await import('remix-development-tools');
-  AppExport = withDevTools(AppExport);
-}
-export default AppExport;
+export default App;
