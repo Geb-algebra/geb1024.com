@@ -6,5 +6,5 @@ export default function Quote(props: { children?: React.ReactNode }) {
       return <p key={child.key}>{child.props.children}</p>;
     else return child;
   });
-  return <blockquote className="pl-3 border-l-4 my-6 text-sharp-gray">{children}</blockquote>;
+  return <blockquote className="pl-3 border-l-4 my-6 text-sub-color">{children}</blockquote>;
 }

@@ -5,10 +5,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return json({});
 }
 
-export const meta: MetaFunction = () => {
-  return [{ title: '8bit stack' }];
-};
-
 export default function Index() {
   return (
     <div className="max-w-3xl mx-auto">
