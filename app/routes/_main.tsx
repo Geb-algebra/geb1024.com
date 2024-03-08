@@ -1,22 +1,16 @@
 import { type MetaFunction, json, type LoaderFunctionArgs } from '@remix-run/node';
 import { Link, Outlet } from '@remix-run/react';
+import gsap from 'gsap';
 import GebMoon from '~/components/GebMoon.tsx';
+import GitHub from '~/components/logos/GitHub.tsx';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   return json({});
 }
 
 export const meta: MetaFunction = () => {
-  return [{ title: 'New Remix App' }, { name: 'description', content: 'Welcome to Remix!' }];
+  return [{ title: "Geb's Lab" }, { name: 'description', content: 'Welcome to Remix!' }];
 };
-
-function NavItem(props: { name: string; href: string }) {
-  return (
-    <Link to={props.href} className="text-accent-wine">
-      {props.name}
-    </Link>
-  );
-}
 
 export default function Index() {
   return (
@@ -29,26 +23,16 @@ export default function Index() {
           >
             <GebMoon color="#02ac8e" />
           </Link>
-          <div className="w-20 p-4 h-fit border-geb-blue rounded-iconic-3xl border-b-0 border-l-8 border-double">
-            <div className="w-16 h-16 my-8 rounded-full bg-gray-400">GitHub</div>
-            <div className="w-16 h-16 my-8 rounded-full bg-gray-400">Twitter</div>
-            <div className="w-16 h-16 my-8 rounded-full bg-gray-400">LinkedIn</div>
+          <div className="w-36 p-4 mt-8 h-fit">
+            <a href="https://github.com/Geb-algebra">
+              <GitHub color="black" className="w-12 h-12 mx-auto" />
+            </a>
           </div>
         </aside>
-        <nav className="w-full h-20 flex justify-stretch item-start py-2 backdrop-blur-xl bg-base-color bg-opacity-50">
-          <h1 className="px-6 border-t-8 border-double border-geb-blue flex-1 h-16 flex items-center text-3xl font-bold text-geb-blue">
-            Geb's Lab
-          </h1>
-
-          <div className="h-16 px-16 mr-4 flex gap-6 items-center border-t-8 border-r-0 border-double border-geb-blue rounded-iconic-3xl">
-            <NavItem name="Articles" href="/articles" />
-            <NavItem name="About Me" href="/about" />
-            <NavItem name="Contact" href="/contact" />
-          </div>
-        </nav>
       </div>
-      <div className="ml-48">
-        <main className="mr-6 pt-28">
+      <div className="ml-36">
+        <main>
+          <h1 className="p-6 mb-24 flex-1 h-16 text-3xl font-bold text-geb-blue">Geb's Lab</h1>
           <Outlet />
         </main>
       </div>
