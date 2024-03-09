@@ -27,8 +27,8 @@ export default function Paragraph(props: { summarized: boolean; children?: React
   }
   return (
     <div className="my-6 font-lg">
-      <span className="text-gray-700">{keyline}</span>
-      {props.summarized ? null : <span className="text-gray-500">{content}</span>}
+      <span className="text-text-main">{keyline}</span>
+      {props.summarized ? null : <span className="text-text-sub">{content}</span>}
     </div>
   );
 }

@@ -11,6 +11,7 @@ import Header3 from '~/components/articles/Header3.tsx';
 import Paragraph from '~/components/articles/Paragraph.tsx';
 import Quote from '~/components/articles/Quote.tsx';
 import { isRouteErrorResponse, useLoaderData, useRouteError } from '@remix-run/react';
+import Spacer from '~/components/Spacer';
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   if (!params.slug) {
@@ -43,14 +44,15 @@ export default function Article(props: {}) {
   const [summarized, setSummarized] = React.useState(false);
   return (
     <>
-      <div className="flex justify-between items-center my-24">
-        <h1 className="text-geb-blue font-bold text-3xl">{frontmatter.title}</h1>
+      <div className="flex justify-between items-center mt-24">
+        <h1 className="text-text-main font-bold text-3xl">{frontmatter.title}</h1>
         <Switch
           actionName="Summarize"
           state={summarized}
           onSwitch={(state: boolean) => setSummarized(state)}
         />
       </div>
+      <div className="text-text-sub text-lg mt-6 mb-24">{frontmatter.writtenAt}</div>
       <Component
         components={{
           h1: (props) => <Header1 {...props} />,
@@ -61,6 +63,7 @@ export default function Article(props: {}) {
           blockquote: (props) => <Quote {...props} />,
         }}
       />
+      <Spacer h={24} />
     </>
   );
 }

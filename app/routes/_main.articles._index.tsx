@@ -15,7 +15,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export async function action({ request }: ActionFunctionArgs) {}
 
 export const meta: MetaFunction = () => {
-  return [{ title: 'Blod Articles' }];
+  return [{ title: 'Blog Posts' }];
 };
 
 function Article(props: { article: ArticleInfo }) {

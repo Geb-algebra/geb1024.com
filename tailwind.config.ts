@@ -10,7 +10,7 @@ export default {
         'base-color': '#fffff0',
         'sub-color': '#a2a2ad',
         'text-main': '#002538',
-        'text-sub': '#a2a2ad',
+        'text-sub': '#63676b',
       },
       fontFamily: {
         sans: ['"Ubuntu"', '"Noto Sans JP"', 'sans-serif'],
