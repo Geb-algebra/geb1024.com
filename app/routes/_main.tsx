@@ -1,6 +1,5 @@
 import { type MetaFunction, json, type LoaderFunctionArgs } from '@remix-run/node';
 import { Link, Outlet } from '@remix-run/react';
-import gsap from 'gsap';
 import GebMoon from '~/components/GebMoon.tsx';
 import GitHub from '~/components/logos/GitHub.tsx';
 
