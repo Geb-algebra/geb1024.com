@@ -1,8 +1,7 @@
 import React from 'react';
 import { bundlePost } from '~/services/mdx.server.ts';
 import { getMDXComponent } from 'mdx-bundler/client/index.js';
-import { type LoaderFunctionArgs, json } from '@remix-run/node';
-import type { MetaFunction } from '@remix-run/react';
+import { type LoaderFunctionArgs, type MetaFunction, json } from '@remix-run/cloudflare';
 
 import Switch from '~/components/Switch.tsx';
 import Header1 from '~/components/articles/Header1.tsx';

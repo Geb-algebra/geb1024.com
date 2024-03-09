@@ -1,4 +1,4 @@
-import { createCookieSessionStorage } from '@remix-run/node';
+import { createCookieSessionStorage } from '@remix-run/cloudflare';
 
 if (!process.env.SESSION_SECRET) throw new Error('SESSION_SECRET must be set');
 
