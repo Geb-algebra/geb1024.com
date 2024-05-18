@@ -31,7 +31,13 @@ export default function Overlay(props: {
         <div
           className="fixed left-0 top-0 w-full h-screen backdrop-brightness-50 z-50 flex place-content-center"
           onClick={() => props.setIsShown(false)}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") {
+              props.setIsShown(false);
+            }
+          }}
         >
+          {/* biome-ignore lint/a11y/useKeyWithClickEvents: we only disable background clicks */}
           <div className="my-auto" onClick={(e) => e.stopPropagation()}>
             {props.children}
           </div>

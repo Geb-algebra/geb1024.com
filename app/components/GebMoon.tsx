@@ -2,6 +2,7 @@ export default function GebMoon(props: { color: string }) {
   const color = props.color || "#02ac8e";
   return (
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0.00 0.00 1448.00 1448.00">
+      <title>Geb's Moon Logo</title>
       <path
         fill={color}
         d="

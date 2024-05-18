@@ -22,7 +22,8 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     return json({ code, frontmatter });
   } catch (e) {
     // Errors thrown when a file is not found actually have a code property but Error type doesn't
-    if (e instanceof Error && (e as any).code === "ENOENT") {
+    // @ts-ignore - We will delete this route soon
+    if (e instanceof Error && (e.code ?? "") === "ENOENT") {
       throw new Response(null, { status: 404, statusText: "Not Found" });
     }
     throw e;
@@ -36,7 +37,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   return [{ title: data?.frontmatter.title }, { description: data?.frontmatter.description }];
 };
 
-export default function Article(props: {}) {
+export default function Article() {
   const loaderData = useLoaderData<typeof loader>();
 
   const { code, frontmatter } = loaderData;
@@ -74,9 +75,7 @@ export function ErrorBoundary() {
     <div role="alert">
       <p>Something went wrong:</p>
       <pre>
-        {isRouteErrorResponse(error)
-          ? `${(error as any).status} ${(error as any).statusText}`
-          : "Unknown Error"}
+        {isRouteErrorResponse(error) ? `${error.status} ${error.statusText}` : "Unknown Error"}
       </pre>
     </div>
   );
