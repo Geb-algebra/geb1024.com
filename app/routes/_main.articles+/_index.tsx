@@ -1,21 +1,45 @@
-import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from "@remix-run/cloudflare";
+import { json } from "@remix-run/cloudflare";
+import type { HeadersFunction } from "@remix-run/cloudflare";
 import { Link, useLoaderData } from "@remix-run/react";
 import BookIcon from "~/components/icons/BookIcon.tsx";
 import BriefCaseIcon from "~/components/icons/BriefCaseIcon.tsx";
 import CommandLineIcon from "~/components/icons/CommandLineIcon.tsx";
 import type { IconComponent } from "~/components/icons/types.ts";
-import { type ArticleInfo, listAllArticles } from "~/services/mdx.server.ts";
+
+export const headers: HeadersFunction = () => {
+  return {
+    "cache-control": "public, max-age=3600",
+  };
+};
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const articles = await listAllArticles();
-  return json({ articles });
+  return json(
+    [
+      {
+        slug: "hoge",
+        title: "昨日の試合の全打席を振り返り",
+        category: "books",
+        writtenAt: "2022/10/10",
+      },
+    ],
+    {
+      headers: {
+        "cache-control": "public, max-age=3600",
+      },
+    },
+  );
 }
-
-export async function action({ request }: ActionFunctionArgs) {}
 
 export const meta: MetaFunction = () => {
   return [{ title: "Blog Posts" }];
+};
+
+export type ArticleInfo = {
+  slug: string;
+  title: string;
+  category: string;
+  writtenAt: string; // yyyy/mm/dd
 };
 
 function Article(props: { article: ArticleInfo }) {
@@ -43,7 +67,7 @@ function Spacer() {
 }
 
 export default function Page() {
-  const { articles } = useLoaderData<typeof loader>();
+  const articles = useLoaderData<typeof loader>();
   return (
     <div className="max-w-3xl">
       <div className="text-geb-blue text-4xl font-bold">Blog Posts</div>
