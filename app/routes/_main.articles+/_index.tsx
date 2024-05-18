@@ -7,18 +7,15 @@ import CommandLineIcon from "~/components/icons/CommandLineIcon.tsx";
 import type { IconComponent } from "~/components/icons/types.ts";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const articles = [
+  return json([
     {
       slug: "hoge",
       title: "昨日の試合の全打席を振り返り",
       category: "books",
       writtenAt: "2022/10/10",
     },
-  ];
-  return json({ articles });
+  ]);
 }
-
-export async function action({ request }: ActionFunctionArgs) {}
 
 export const meta: MetaFunction = () => {
   return [{ title: "Blog Posts" }];
@@ -56,7 +53,7 @@ function Spacer() {
 }
 
 export default function Page() {
-  const { articles } = useLoaderData<typeof loader>();
+  const articles = useLoaderData<typeof loader>();
   return (
     <div className="max-w-3xl">
       <div className="text-geb-blue text-4xl font-bold">Blog Posts</div>

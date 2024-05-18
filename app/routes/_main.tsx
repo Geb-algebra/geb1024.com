@@ -1,12 +1,9 @@
 import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/cloudflare";
+import { HeadersFunction } from "@remix-run/node";
 import { Link, Outlet } from "@remix-run/react";
 import gsap from "gsap";
 import GebMoon from "~/components/GebMoon.tsx";
 import GitHub from "~/components/logos/GitHub.tsx";
-
-export async function loader({ request }: LoaderFunctionArgs) {
-  return json({});
-}
 
 export const meta: MetaFunction = () => {
   return [{ title: "Geb's Lab" }, { name: "description", content: "Welcome to Remix!" }];
@@ -19,6 +16,7 @@ export default function Index() {
         <aside className="w-42 pl-2 pt-2">
           <Link
             to="/"
+            prefetch="viewport"
             className="block w-36 h-36 pl-0.5 pt-0.5 bg-geb-blue rounded-iconic-3xl border-base-color border-double border-8"
           >
             <GebMoon color="#02ac8e" />
