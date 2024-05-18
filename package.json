@@ -29,6 +29,7 @@
     "/server-build"
   ],
   "dependencies": {
+    "@mdx-js/rollup": "^3.0.1",
     "@remix-run/cloudflare": "^2.9.2",
     "@remix-run/css-bundle": "^2.9.2",
     "@remix-run/node": "^2.9.2",
@@ -57,6 +58,7 @@
     "msw": "^2.3.0",
     "npm-run-all": "^4.1.5",
     "remix-development-tools": "^4.1.6",
+    "remix-flat-routes": "^0.6.5",
     "start-server-and-test": "^2.0.3",
     "tailwindcss": "^3.4.3",
     "tsx": "^4.10.5",

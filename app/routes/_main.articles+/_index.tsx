@@ -5,10 +5,16 @@ import BookIcon from "~/components/icons/BookIcon.tsx";
 import BriefCaseIcon from "~/components/icons/BriefCaseIcon.tsx";
 import CommandLineIcon from "~/components/icons/CommandLineIcon.tsx";
 import type { IconComponent } from "~/components/icons/types.ts";
-import { type ArticleInfo, listAllArticles } from "~/services/mdx.server.ts";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const articles = await listAllArticles();
+  const articles = [
+    {
+      slug: "hoge",
+      title: "昨日の試合の全打席を振り返り",
+      category: "books",
+      writtenAt: "2022/10/10",
+    },
+  ];
   return json({ articles });
 }
 
@@ -16,6 +22,13 @@ export async function action({ request }: ActionFunctionArgs) {}
 
 export const meta: MetaFunction = () => {
   return [{ title: "Blog Posts" }];
+};
+
+export type ArticleInfo = {
+  slug: string;
+  title: string;
+  category: string;
+  writtenAt: string; // yyyy/mm/dd
 };
 
 function Article(props: { article: ArticleInfo }) {
