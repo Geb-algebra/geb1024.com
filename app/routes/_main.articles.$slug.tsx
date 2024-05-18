@@ -1,4 +1,4 @@
-import { type LoaderFunctionArgs, json } from "@remix-run/node";
+import { type LoaderFunctionArgs, json } from "@remix-run/cloudflare";
 import type { MetaFunction } from "@remix-run/react";
 import { getMDXComponent } from "mdx-bundler/client/index.js";
 import React from "react";

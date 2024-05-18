@@ -1,4 +1,4 @@
-import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
+import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/cloudflare";
 import { Link, Outlet } from "@remix-run/react";
 import gsap from "gsap";
 import GebMoon from "~/components/GebMoon.tsx";

@@ -1,4 +1,4 @@
-import { type LoaderFunctionArgs, json } from "@remix-run/node";
+import { type LoaderFunctionArgs, json } from "@remix-run/cloudflare";
 import { Outlet } from "react-router-dom";
 
 export async function loader({ request }: LoaderFunctionArgs) {
