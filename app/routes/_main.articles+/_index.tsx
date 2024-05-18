@@ -1,20 +1,34 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from "@remix-run/cloudflare";
 import { json } from "@remix-run/cloudflare";
+import type { HeadersFunction } from "@remix-run/cloudflare";
 import { Link, useLoaderData } from "@remix-run/react";
 import BookIcon from "~/components/icons/BookIcon.tsx";
 import BriefCaseIcon from "~/components/icons/BriefCaseIcon.tsx";
 import CommandLineIcon from "~/components/icons/CommandLineIcon.tsx";
 import type { IconComponent } from "~/components/icons/types.ts";
 
+export const headers: HeadersFunction = () => {
+  return {
+    "cache-control": "public, max-age=3600",
+  };
+};
+
 export async function loader({ request }: LoaderFunctionArgs) {
-  return json([
+  return json(
+    [
+      {
+        slug: "hoge",
+        title: "昨日の試合の全打席を振り返り",
+        category: "books",
+        writtenAt: "2022/10/10",
+      },
+    ],
     {
-      slug: "hoge",
-      title: "昨日の試合の全打席を振り返り",
-      category: "books",
-      writtenAt: "2022/10/10",
+      headers: {
+        "cache-control": "public, max-age=3600",
+      },
     },
-  ]);
+  );
 }
 
 export const meta: MetaFunction = () => {

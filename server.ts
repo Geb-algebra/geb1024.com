@@ -8,7 +8,6 @@ import { getSession, getSessionStorage } from "remix-hono/session";
 
 const app = new Hono<{
   Bindings: {
-    PORT: number;
     SESSION_SECRET: string;
   };
 }>();
@@ -60,19 +59,21 @@ app.use(
           };
         },
       })(c, next);
+      // biome-ignore lint/style/noUselessElse: removal of this else statement causes a compilation error
+    } else {
+      if (!handler) {
+        // @ts-expect-error it's not typed
+        const build = await import("virtual:remix/server-build");
+        const { createRequestHandler } = await import("@remix-run/cloudflare");
+        handler = createRequestHandler(build, "development");
+      }
+      const remixContext = {
+        cloudflare: {
+          env: c.env,
+        },
+      } as unknown as AppLoadContext;
+      return handler(c.req.raw, remixContext);
     }
-    if (!handler) {
-      // @ts-expect-error it's not typed
-      const build = await import("virtual:remix/server-build");
-      const { createRequestHandler } = await import("@remix-run/cloudflare");
-      handler = createRequestHandler(build, "development");
-    }
-    const remixContext = {
-      cloudflare: {
-        env: c.env,
-      },
-    } as unknown as AppLoadContext;
-    return handler(c.req.raw, remixContext);
   },
 );
 

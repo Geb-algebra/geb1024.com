@@ -1,7 +1,5 @@
-import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/cloudflare";
-import { HeadersFunction } from "@remix-run/node";
+import type { MetaFunction } from "@remix-run/cloudflare";
 import { Link, Outlet } from "@remix-run/react";
-import gsap from "gsap";
 import GebMoon from "~/components/GebMoon.tsx";
 import GitHub from "~/components/logos/GitHub.tsx";
 
@@ -15,7 +13,7 @@ export default function Index() {
       <div className="fixed w-full flex h-20 z-50">
         <aside className="w-42 pl-2 pt-2">
           <Link
-            to="/"
+            to="/articles"
             prefetch="viewport"
             className="block w-36 h-36 pl-0.5 pt-0.5 bg-geb-blue rounded-iconic-3xl border-base-color border-double border-8"
           >

@@ -19,7 +19,7 @@ export default defineConfig({
       exclude: [...defaultOptions.exclude, "/assets/**", "/app/**"],
       injectClientScript: false,
     }),
-    // remixDevTools(),
+    remixDevTools(),
     mdx({
       rehypePlugins: [[rehypePrettyCode, { theme: "nord" }]],
     }),

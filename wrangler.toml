@@ -1,10 +1,9 @@
 name = "geb1024-com"
 compatibility_date = "2024-04-01"
 compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = "./build/client"
 
-[vars]
-SESSION_SECRET = "samplesecretvalue"
-PORT = 3000
+# [vars]
 
 # [[kv_namespaces]]
 # binding = "MY_KV_NAMESPACE"
