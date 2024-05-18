@@ -1,11 +1,11 @@
-import { installGlobals } from '@remix-run/node';
-import { beforeEach } from 'vitest';
-import { server } from 'mocks/mock-server.ts';
+import { installGlobals } from "@remix-run/node";
+import { server } from "mocks/mock-server.ts";
+import { beforeEach } from "vitest";
 
 installGlobals();
 
 beforeAll(() => {
-  server.listen({ onUnhandledRequest: 'warn' });
+  server.listen({ onUnhandledRequest: "warn" });
 });
 
 beforeEach(async () => {

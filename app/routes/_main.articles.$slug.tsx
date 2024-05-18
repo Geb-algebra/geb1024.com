@@ -1,29 +1,29 @@
-import React from 'react';
-import { bundlePost } from '~/services/mdx.server.ts';
-import { getMDXComponent } from 'mdx-bundler/client/index.js';
-import { type LoaderFunctionArgs, json } from '@remix-run/node';
-import type { MetaFunction } from '@remix-run/react';
+import { type LoaderFunctionArgs, json } from "@remix-run/node";
+import type { MetaFunction } from "@remix-run/react";
+import { getMDXComponent } from "mdx-bundler/client/index.js";
+import React from "react";
+import { bundlePost } from "~/services/mdx.server.ts";
 
-import Switch from '~/components/Switch.tsx';
-import Header1 from '~/components/articles/Header1.tsx';
-import Header2 from '~/components/articles/Header2.tsx';
-import Header3 from '~/components/articles/Header3.tsx';
-import Paragraph from '~/components/articles/Paragraph.tsx';
-import Quote from '~/components/articles/Quote.tsx';
-import { isRouteErrorResponse, useLoaderData, useRouteError } from '@remix-run/react';
-import Spacer from '~/components/Spacer';
+import { isRouteErrorResponse, useLoaderData, useRouteError } from "@remix-run/react";
+import Spacer from "~/components/Spacer";
+import Switch from "~/components/Switch.tsx";
+import Header1 from "~/components/articles/Header1.tsx";
+import Header2 from "~/components/articles/Header2.tsx";
+import Header3 from "~/components/articles/Header3.tsx";
+import Paragraph from "~/components/articles/Paragraph.tsx";
+import Quote from "~/components/articles/Quote.tsx";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   if (!params.slug) {
-    throw new Response(null, { status: 404, statusText: 'Not Found' });
+    throw new Response(null, { status: 404, statusText: "Not Found" });
   }
   try {
     const { code, frontmatter } = await bundlePost(params.slug);
     return json({ code, frontmatter });
   } catch (e) {
     // Errors thrown when a file is not found actually have a code property but Error type doesn't
-    if (e instanceof Error && (e as any).code === 'ENOENT') {
-      throw new Response(null, { status: 404, statusText: 'Not Found' });
+    if (e instanceof Error && (e as any).code === "ENOENT") {
+      throw new Response(null, { status: 404, statusText: "Not Found" });
     }
     throw e;
   }
@@ -31,7 +31,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
 export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (isRouteErrorResponse(error)) {
-    return [{ title: 'Not Found' }, { description: 'The page you requested could not be found.' }];
+    return [{ title: "Not Found" }, { description: "The page you requested could not be found." }];
   }
   return [{ title: data?.frontmatter.title }, { description: data?.frontmatter.description }];
 };
@@ -76,7 +76,7 @@ export function ErrorBoundary() {
       <pre>
         {isRouteErrorResponse(error)
           ? `${(error as any).status} ${(error as any).statusText}`
-          : 'Unknown Error'}
+          : "Unknown Error"}
       </pre>
     </div>
   );

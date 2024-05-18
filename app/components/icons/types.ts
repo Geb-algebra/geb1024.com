@@ -1,4 +1,4 @@
-export type IconType = 'outlined' | 'solid';
+export type IconType = "outlined" | "solid";
 export type IconProps = {
   type?: IconType;
   className?: string;

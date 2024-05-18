@@ -1,11 +1,11 @@
-import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
-import { json } from '@remix-run/node';
-import { Link, useLoaderData } from '@remix-run/react';
-import CommandLineIcon from '~/components/icons/CommandLineIcon.tsx';
-import BookIcon from '~/components/icons/BookIcon.tsx';
-import BriefCaseIcon from '~/components/icons/BriefCaseIcon.tsx';
-import { type ArticleInfo, listAllArticles } from '~/services/mdx.server.ts';
-import type { IconComponent } from '~/components/icons/types.ts';
+import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { Link, useLoaderData } from "@remix-run/react";
+import BookIcon from "~/components/icons/BookIcon.tsx";
+import BriefCaseIcon from "~/components/icons/BriefCaseIcon.tsx";
+import CommandLineIcon from "~/components/icons/CommandLineIcon.tsx";
+import type { IconComponent } from "~/components/icons/types.ts";
+import { type ArticleInfo, listAllArticles } from "~/services/mdx.server.ts";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const articles = await listAllArticles();
@@ -15,7 +15,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export async function action({ request }: ActionFunctionArgs) {}
 
 export const meta: MetaFunction = () => {
-  return [{ title: 'Blog Posts' }];
+  return [{ title: "Blog Posts" }];
 };
 
 function Article(props: { article: ArticleInfo }) {

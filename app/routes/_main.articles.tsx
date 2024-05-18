@@ -1,5 +1,5 @@
-import { json, type LoaderFunctionArgs } from '@remix-run/node';
-import { Outlet } from 'react-router-dom';
+import { type LoaderFunctionArgs, json } from "@remix-run/node";
+import { Outlet } from "react-router-dom";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   return json({});

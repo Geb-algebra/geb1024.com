@@ -18,7 +18,7 @@ export default function Switch(props: {
           <div className="w-12 h-8 bg-sub-color rounded-iconic-lg flex justify-center items-center px-1 py-1">
             <div
               className={`w-6 h-6 rounded-iconic-md transform transition-transform duration-300 ease-in-out ${
-                props.state ? 'bg-geb-blue translate-x-2' : 'bg-text-sub -translate-x-2'
+                props.state ? "bg-geb-blue translate-x-2" : "bg-text-sub -translate-x-2"
               }`}
             />
           </div>

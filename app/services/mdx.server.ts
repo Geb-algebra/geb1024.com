@@ -1,11 +1,11 @@
-import fs from 'fs';
-import { bundleMDX } from 'mdx-bundler';
-import rehypePrettyCode from 'rehype-pretty-code';
+import fs from "node:fs";
+import { bundleMDX } from "mdx-bundler";
+import rehypePrettyCode from "rehype-pretty-code";
 
 export async function bundlePost(slug: string) {
   const path = `${process.cwd()}/app/articles/${slug}`;
   return await bundleMDX({
-    file: path + '/page.mdx',
+    file: `${path}/page.mdx`,
     cwd: path,
 
     esbuildOptions: (options) => {
@@ -13,8 +13,8 @@ export async function bundlePost(slug: string) {
       // https://github.com/kentcdodds/mdx-bundler#image-bundling
       options.loader = {
         ...options.loader,
-        '.png': 'dataurl',
-        '.gif': 'dataurl',
+        ".png": "dataurl",
+        ".gif": "dataurl",
       };
       return options;
     },

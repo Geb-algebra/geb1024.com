@@ -1,7 +1,7 @@
-import { test, expect } from './fixtures.ts';
+import { expect, test } from "./fixtures.ts";
 
-test.describe('SAMPLE', () => {
-  test('sample', async () => {
+test.describe("SAMPLE", () => {
+  test("sample", async () => {
     await expect(1).toEqual(1);
   });
 });

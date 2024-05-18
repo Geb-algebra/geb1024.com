@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 // display keyline (the first sentence) and the rest with different colors
 // the rest can be hidden in order to summarize the article
@@ -11,7 +11,7 @@ export default function Paragraph(props: { summarized: boolean; children?: React
   const children = React.Children.toArray(props.children);
   // find the index of the first child that is a string with a newline
   const index = children.findIndex((child) => {
-    return typeof child === 'string' && child.includes('\n');
+    return typeof child === "string" && child.includes("\n");
   });
   // If its a single sentence paragraph, which has no newline, all of it is the keyline
   if (index === -1) {
@@ -20,9 +20,9 @@ export default function Paragraph(props: { summarized: boolean; children?: React
   } else {
     // define keyline as an array of ReactNodes before the first newline
     keyline = children.slice(0, index);
-    keyline.push((children[index] as string).split('\n')[0]);
+    keyline.push((children[index] as string).split("\n")[0]);
     // define content as an array of ReactNodes after the first newline
-    content = [(children[index] as string).split('\n')[1]];
+    content = [(children[index] as string).split("\n")[1]];
     content.push(...children.slice(index + 1));
   }
   return (
