@@ -6,6 +6,7 @@ import BookIcon from "~/components/icons/BookIcon.tsx";
 import BriefCaseIcon from "~/components/icons/BriefCaseIcon.tsx";
 import CommandLineIcon from "~/components/icons/CommandLineIcon.tsx";
 import type { IconComponent } from "~/components/icons/types.ts";
+import CategoryTop from "~/components/layouts/CategoryTop";
 
 export const headers: HeadersFunction = () => {
   return {
@@ -50,11 +51,14 @@ function Article(props: { article: ArticleInfo }) {
   };
   const Icon = icons[props.article.category];
   return (
-    <Link to={`/articles/${props.article.slug}`} className="flex w-full h-32">
-      <div className="aspect-square h-full rounded-iconic-3xl bg-sub-color border-8 border-double border-base-color">
+    <Link
+      to={`/articles/${props.article.slug}`}
+      className="flex w-full h-24 rounded-iconic-3xl border-t-2 border-sub-color hover:shadow-[0_0_12px_rgba(0,0,0,0.1)] hover:scale-105 hover:bg-paper-color transition-all duration-500"
+    >
+      <div className="aspect-square mt-[2px] h-[90px] rounded-iconic-2xl bg-sub-color ring-2 ring-offset-2 ring-sub-color ">
         <Icon className="w-18 h-18 text-base-color m-6" type="solid" />
       </div>
-      <div className="flex-1 h-full p-8 rounded-iconic-3xl border-t-8 border-r-0 border-double border-sub-color">
+      <div className="flex-1 h-full p-6">
         <div className="text-geb-blue text-xl font-bold">{props.article.title}</div>
         <div className="text-geb-gray text-sm">{props.article.writtenAt}</div>
       </div>
@@ -69,8 +73,7 @@ function Spacer() {
 export default function Page() {
   const articles = useLoaderData<typeof loader>();
   return (
-    <div className="max-w-3xl">
-      <div className="text-geb-blue text-4xl font-bold">Blog Posts</div>
+    <CategoryTop title="Blog Posts">
       <ul>
         {articles.map((article, index) => (
           <li key={article.slug} className="flex my-12">
@@ -80,6 +83,6 @@ export default function Page() {
           </li>
         ))}
       </ul>
-    </div>
+    </CategoryTop>
   );
 }

@@ -7,24 +7,34 @@
     border-top-right-radius: 2px 5px;
     border-bottom-left-radius: 5px 2px;
   }
+
   .rounded-iconic-md {
     border-top-right-radius: 6px 16px;
     border-bottom-left-radius: 16px 6px;
   }
+
   .rounded-iconic-lg {
     border-top-right-radius: 8px 21px;
     border-bottom-left-radius: 21px 8px;
   }
+
   .rounded-iconic-xl {
     border-top-right-radius: 12px 32px;
     border-bottom-left-radius: 32px 12px;
   }
+
   .rounded-iconic-2xl {
     border-top-right-radius: 16px 43px;
     border-bottom-left-radius: 43px 16px;
   }
+
   .rounded-iconic-3xl {
     border-top-right-radius: 24px 64px;
     border-bottom-left-radius: 64px 24px;
+  }
+
+  .blur-mask {
+    -webkit-mask: linear-gradient(#000 90%, transparent);
+    mask: linear-gradient(#000 90%, transparent);
   }
 }
