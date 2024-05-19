@@ -34,7 +34,12 @@ app.use(
 app.use(
   async (c, next) => {
     if (process.env.NODE_ENV !== "development" || import.meta.env.PROD) {
-      return staticAssets()(c, next);
+      return staticAssets({
+        cache: {
+          maxAge: "1week",
+          staleWhileRevalidate: "1year",
+        },
+      })(c, next);
     }
     await next();
   },

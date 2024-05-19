@@ -1,7 +1,9 @@
 import type { MetaFunction } from "@remix-run/cloudflare";
 import { Link, Outlet } from "@remix-run/react";
 import GebMoon from "~/components/GebMoon.tsx";
-import GitHub from "~/components/logos/GitHub.tsx";
+import GitHub from "~/components/logos/GitHub";
+import X from "~/components/logos/X";
+import Zenn from "~/components/logos/Zenn";
 
 export const meta: MetaFunction = () => {
   return [{ title: "Geb's Lab" }, { name: "description", content: "Welcome to Remix!" }];
@@ -15,13 +17,19 @@ export default function Index() {
           <Link
             to="/articles"
             prefetch="viewport"
-            className="block w-36 h-36 pl-0.5 pt-0.5 bg-geb-blue rounded-iconic-3xl border-base-color border-double border-8"
+            className="block w-32 h-32 m-1 pl-0.5 pt-0.5 bg-geb-blue ring-2 ring-offset-2 ring-geb-blue rounded-iconic-3xl"
           >
             <GebMoon color="#02ac8e" />
           </Link>
-          <div className="w-36 p-4 mt-8 h-fit">
+          <div className="w-32 p-4 mt-8 mx-1 h-fit">
             <a href="https://github.com/Geb-algebra">
-              <GitHub color="black" className="w-12 h-12 mx-auto" />
+              <GitHub color="black" className="w-12 h-12 mb-8 mx-auto" />
+            </a>
+            <a href="https://x.com/GebAlgebra">
+              <X color="black" className="w-10 h-10 mb-8 mx-auto" />
+            </a>
+            <a href="https://zenn.dev/geb">
+              <Zenn color="black" className="w-10 h-10 mb-8 mx-auto" />
             </a>
           </div>
         </aside>
