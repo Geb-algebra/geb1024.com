@@ -15,10 +15,14 @@ export default function Switch(props: {
             checked={props.state}
             onChange={(e) => props.onSwitch(e.target.checked)}
           />
-          <div className="w-12 h-8 bg-sub-color rounded-iconic-lg flex justify-center items-center px-1 py-1">
+          <div
+            className={`w-9 h-6 rounded-iconic-md flex justify-center items-center px-1 py-1 ${
+              props.state ? "bg-geb-blue" : "bg-sub-color"
+            }`}
+          >
             <div
-              className={`w-6 h-6 rounded-iconic-md transform transition-transform duration-300 ease-in-out ${
-                props.state ? "bg-geb-blue translate-x-2" : "bg-text-sub -translate-x-2"
+              className={`w-5 h-6 border-2 border-sub-color rounded-iconic-md transform transition-transform duration-300 ease-in-out bg-paper-color ${
+                props.state ? "border-geb-blue translate-x-2" : "border-sub-color -translate-x-2"
               }`}
             />
           </div>

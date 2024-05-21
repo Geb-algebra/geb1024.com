@@ -1,7 +1,7 @@
-export default function Sheet(props: { className: string; children: React.ReactNode }) {
+export default function Sheet(props: { className?: string; children?: React.ReactNode }) {
   return (
     <div
-      className={`rounded-iconic-3xl bg-paper-color shadow-[0_0_12px_rgba(0,0,0,0.1)] ${props.className}`}
+      className={`rounded-iconic-3xl bg-paper-color outline outline-1 outline-border-color shadow-float ${props.className}`}
     >
       {props.children}
     </div>

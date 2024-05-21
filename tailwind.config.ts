@@ -6,12 +6,12 @@ export default {
     extend: {
       colors: {
         "geb-blue": "#002538",
-        "twilight-gray": "#dcd5c8",
         "base-color": "#f0f0e0",
         "paper-color": "#fffff0",
         "sub-color": "#a2a2ad",
         "text-main": "#002538",
         "text-sub": "#63676b",
+        "border-color": "#ccc5b8",
       },
       fontFamily: {
         sans: ['"Ubuntu"', '"Noto Sans JP"', "sans-serif"],

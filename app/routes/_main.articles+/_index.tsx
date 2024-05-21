@@ -1,7 +1,5 @@
-import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from "@remix-run/cloudflare";
-import { json } from "@remix-run/cloudflare";
-import type { HeadersFunction } from "@remix-run/cloudflare";
-import { Link, useLoaderData } from "@remix-run/react";
+import type { HeadersFunction, MetaFunction } from "@remix-run/cloudflare";
+import { Link } from "@remix-run/react";
 import BookIcon from "~/components/icons/BookIcon.tsx";
 import BriefCaseIcon from "~/components/icons/BriefCaseIcon.tsx";
 import CommandLineIcon from "~/components/icons/CommandLineIcon.tsx";
@@ -13,24 +11,6 @@ export const headers: HeadersFunction = () => {
     "cache-control": "public, max-age=3600",
   };
 };
-
-export async function loader({ request }: LoaderFunctionArgs) {
-  return json(
-    [
-      {
-        slug: "hoge",
-        title: "昨日の試合の全打席を振り返り",
-        category: "books",
-        writtenAt: "2022/10/10",
-      },
-    ],
-    {
-      headers: {
-        "cache-control": "public, max-age=3600",
-      },
-    },
-  );
-}
 
 export const meta: MetaFunction = () => {
   return [{ title: "Blog Posts" }];
@@ -53,25 +33,32 @@ function Article(props: { article: ArticleInfo }) {
   return (
     <Link
       to={`/articles/${props.article.slug}`}
-      className="flex w-full h-24 rounded-iconic-3xl border-t-2 border-sub-color hover:shadow-[0_0_12px_rgba(0,0,0,0.1)] hover:scale-105 hover:bg-paper-color transition-all duration-500"
+      className="flex w-full h-20 md:h-24 rounded-iconic-xl md:rounded-iconic-3xl border-sub-color border-t-2 hover:scale-105 hover:bg-paper-color hover:shadow-float transition-all duration-500"
     >
-      <div className="aspect-square mt-[2px] h-[90px] rounded-iconic-2xl bg-sub-color ring-2 ring-offset-2 ring-sub-color ">
-        <Icon className="w-18 h-18 text-base-color m-6" type="solid" />
+      <div className="mt-[2px] h-[70px] md:h-[88px] aspect-square rounded-iconic-xl md:rounded-iconic-2xl bg-sub-color ring-2 ring-offset-2 ring-sub-color z-10 flex items-center">
+        <Icon className="w-12 aspect-square text-base-color mx-auto" type="solid" />
       </div>
-      <div className="flex-1 h-full p-6">
-        <div className="text-geb-blue text-xl font-bold">{props.article.title}</div>
-        <div className="text-geb-gray text-sm">{props.article.writtenAt}</div>
+      <div className="flex-1 h-full px-4 py-2 md:px-6 md:py-4 flex flex-col justify-between">
+        <h1 className="text-geb-blue text-sm md:text-lg font-bold">{props.article.title}</h1>
+        <div className="text-geb-gray text-xs md:text-sm">{props.article.writtenAt}</div>
       </div>
     </Link>
   );
 }
 
 function Spacer() {
-  return <div className="w-32 h-32" />;
+  return <div className="w-32 h-32 hidden md:block" />;
 }
 
 export default function Page() {
-  const articles = useLoaderData<typeof loader>();
+  const articles = [
+    {
+      slug: "hoge",
+      title: "昨日の試合の全打席を振り返りホゲホゲhogeへおげ",
+      category: "books",
+      writtenAt: "2022/10/10",
+    },
+  ];
   return (
     <CategoryTop title="Blog Posts">
       <ul>

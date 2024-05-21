@@ -24,25 +24,24 @@ export default function Article(props: {
 }) {
   const [summarized, setSummarized] = React.useState(false);
   return (
-    <Sheet className="border-t-2 border-r-0 border-sub-color">
-      <div className="flex w-full h-28 rounded-iconic-3xl sticky top-0 backdrop-blur-sm blur-mask">
-        <div className="aspect-square h-[90px] rounded-iconic-2xl bg-sub-color ring-2 ring-offset-2 mx-1 mt-[2px] ring-sub-color ">
-          <BookIcon className="w-18 h-18 text-base-color m-6" type="solid" />
+    <Sheet>
+      <div className="flex w-full rounded-iconic-3xl border-sub-color border-t-2 md:pr-6">
+        <div className="aspect-square h-[72px] md:h-[88px] rounded-iconic-xl md:rounded-iconic-2xl bg-sub-color ring-2 ring-offset-2 m-1 mt-[2px] ring-sub-color flex items-center">
+          <BookIcon className="w-12 h-12 text-base-color mx-auto" type="solid" />
         </div>
-        <div className="m-6 w-full">
-          <h1 className="text-text-main font-bold text-2xl">{props.title}</h1>
-          <div className="flex justify-between">
-            <div className="text-text-sub text-lg mt-2">{props.writtenAt}</div>
+        <div className="m-4 w-full">
+          <h1 className="text-text-main font-bold text-md md:text-lg">{props.title}</h1>
+          <div className="flex justify-between items-end mt-2">
+            <div className="text-text-sub text-xs md:text-sm">{props.writtenAt}</div>
             <Switch
               actionName="Summarize"
               state={summarized}
               onSwitch={(state: boolean) => setSummarized(state)}
-              className="ml-auto"
             />
           </div>
         </div>
       </div>
-      <div className="px-8 pb-16">
+      <div className="px-4 md:px-8 pb-16">
         <props.Content
           components={{
             h1: (props) => <Header1 {...props} />,
