@@ -1,5 +1,6 @@
 import type { HeadersFunction, MetaFunction } from "@remix-run/cloudflare";
 import { Link } from "@remix-run/react";
+import ArticleMark from "~/components/ArticleMark";
 import BookIcon from "~/components/icons/BookIcon.tsx";
 import BriefCaseIcon from "~/components/icons/BriefCaseIcon.tsx";
 import CommandLineIcon from "~/components/icons/CommandLineIcon.tsx";
@@ -35,9 +36,7 @@ function Article(props: { article: ArticleInfo }) {
       to={`/articles/${props.article.slug}`}
       className="flex w-full h-20 md:h-24 rounded-iconic-xl md:rounded-iconic-3xl border-sub-color border-t-2 hover:scale-105 hover:bg-paper-color hover:shadow-float transition-all duration-500"
     >
-      <div className="mt-[2px] h-[70px] md:h-[88px] aspect-square rounded-iconic-xl md:rounded-iconic-2xl bg-sub-color ring-2 ring-offset-2 ring-sub-color z-10 flex items-center">
-        <Icon className="w-12 aspect-square text-base-color mx-auto" type="solid" />
-      </div>
+      <ArticleMark Icon={Icon} />
       <div className="flex-1 h-full px-4 py-2 md:px-6 md:py-4 flex flex-col justify-between">
         <h1 className="text-geb-blue text-sm md:text-lg font-bold">{props.article.title}</h1>
         <div className="text-geb-gray text-xs md:text-sm">{props.article.writtenAt}</div>

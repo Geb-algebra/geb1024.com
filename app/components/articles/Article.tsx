@@ -7,6 +7,7 @@ import Switch from "~/components/Switch";
 import React from "react";
 import Sheet from "../Sheet";
 import BookIcon from "../icons/BookIcon";
+import ArticleMark from "../ArticleMark";
 
 export default function Article(props: {
   title: string;
@@ -26,9 +27,7 @@ export default function Article(props: {
   return (
     <Sheet>
       <div className="flex w-full rounded-iconic-3xl border-sub-color border-t-2 md:pr-6">
-        <div className="aspect-square h-[72px] md:h-[88px] rounded-iconic-xl md:rounded-iconic-2xl bg-sub-color ring-2 ring-offset-2 m-1 mt-[2px] ring-sub-color flex items-center">
-          <BookIcon className="w-12 h-12 text-base-color mx-auto" type="solid" />
-        </div>
+        <ArticleMark Icon={BookIcon} />
         <div className="m-4 w-full">
           <h1 className="text-text-main font-bold text-md md:text-lg">{props.title}</h1>
           <div className="flex justify-between items-end mt-2">
