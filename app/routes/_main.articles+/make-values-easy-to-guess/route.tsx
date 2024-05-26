@@ -1,5 +1,5 @@
 import Article from "~/components/articles/Article";
-import Content, { title, writtenAt } from "./hoge.mdx";
+import Content, { title, writtenAt } from "./content.mdx";
 import type { HeadersFunction } from "@remix-run/cloudflare";
 
 export const headers: HeadersFunction = () => {

@@ -52,10 +52,10 @@ function Spacer() {
 export default function Page() {
   const articles = [
     {
-      slug: "hoge",
-      title: "昨日の試合の全打席を振り返りホゲホゲhogeへおげ",
-      category: "books",
-      writtenAt: "2022/10/10",
+      slug: "make-values-easy-to-guess",
+      title: "「変数の値を推測しやすくする」と読みやすいプログラムになる",
+      category: "tech",
+      writtenAt: "2024/01/21",
     },
   ];
   return (
