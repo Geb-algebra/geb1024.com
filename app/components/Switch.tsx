@@ -21,7 +21,7 @@ export default function Switch(props: {
             }`}
           >
             <div
-              className={`w-5 h-6 border-2 border-sub-color rounded-iconic-md transform transition-transform duration-300 ease-in-out bg-paper-color ${
+              className={`w-5 h-6 border-2 rounded-iconic-md transform transition-transform duration-300 ease-in-out bg-paper-color ${
                 props.state ? "border-geb-blue translate-x-2" : "border-sub-color -translate-x-2"
               }`}
             />
