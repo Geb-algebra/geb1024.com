@@ -1,13 +1,23 @@
-import Article from "~/components/articles/Article";
-import type { HeadersFunction } from "@remix-run/cloudflare";
+import type { HeadersFunction, MetaFunction } from "@remix-run/cloudflare";
+import type { ReactNode } from "react";
 import Sheet from "~/components/Sheet";
 import CategoryTop from "~/components/layouts/CategoryTop";
-import type { ReactNode } from "react";
 
 export const headers: HeadersFunction = () => {
   return {
     "cache-control": "public, max-age=3600",
   };
+};
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "About Me" },
+    {
+      name: "description",
+      content:
+        "I'm a full cycle engineer interested in designing and developing products that perfectly fits users' needs with great UX.",
+    },
+  ];
 };
 
 function Paragraph(props: { children: ReactNode }) {

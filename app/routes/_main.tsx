@@ -11,7 +11,13 @@ import X from "~/components/logos/X";
 import Zenn from "~/components/logos/Zenn";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "Geb's Lab" }, { name: "description", content: "Welcome to Remix!" }];
+  return [
+    { title: "Geb's Lab" },
+    {
+      name: "description",
+      content: "An engineer's knowledges about tech, communication, team building, etc.",
+    },
+  ];
 };
 
 export default function Index() {
