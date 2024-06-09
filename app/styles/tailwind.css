@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  @font-face {
+    font-family: "Virgil";
+    src: url("https://excalidraw.com/Virgil.woff2");
+  }
+
+  @font-face {
+    font-family: "Cascadia";
+    src: url("https://excalidraw.com/Cascadia.woff2");
+  }
+
+  @font-face {
+    font-family: "Assistant";
+    src: url("https://excalidraw.com/Assistant-Regular.woff2");
+  }
+}
+
 @layer utilities {
   .rounded-iconic-xs {
     border-top-right-radius: 2px 5px;

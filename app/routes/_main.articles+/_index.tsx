@@ -1,6 +1,7 @@
 import type { HeadersFunction, MetaFunction } from "@remix-run/cloudflare";
-import { Link } from "@remix-run/react";
-import ArticleMark from "~/components/ArticleMark";
+import LinkToSheet from "~/components/LinkToSheet";
+import SheetHeader from "~/components/SheetHeader";
+import WrittenAt from "~/components/WrittenAt";
 import BookIcon from "~/components/icons/BookIcon.tsx";
 import BriefCaseIcon from "~/components/icons/BriefCaseIcon.tsx";
 import CommandLineIcon from "~/components/icons/CommandLineIcon.tsx";
@@ -21,7 +22,7 @@ export type ArticleInfo = {
   slug: string;
   title: string;
   category: string;
-  writtenAt: string; // yyyy/mm/dd
+  writtenAt: Date;
 };
 
 function Article(props: { article: ArticleInfo }) {
@@ -32,21 +33,16 @@ function Article(props: { article: ArticleInfo }) {
   };
   const Icon = icons[props.article.category];
   return (
-    <Link
-      to={`/articles/${props.article.slug}`}
-      className="flex w-full h-20 md:h-24 rounded-iconic-xl md:rounded-iconic-3xl border-sub-color border-t-2 hover:scale-105 hover:bg-paper-color hover:shadow-float transition-all duration-500"
-    >
-      <ArticleMark Icon={Icon} />
-      <div className="flex-1 h-full px-4 py-2 md:px-6 md:py-4 flex flex-col justify-between">
-        <h1 className="text-geb-blue text-sm md:text-lg font-bold">{props.article.title}</h1>
-        <div className="text-geb-gray text-xs md:text-sm">{props.article.writtenAt}</div>
-      </div>
-    </Link>
+    <LinkToSheet to={`/articles/${props.article.slug}`}>
+      <SheetHeader Icon={Icon} title={props.article.title}>
+        <WrittenAt date={props.article.writtenAt} />
+      </SheetHeader>
+    </LinkToSheet>
   );
 }
 
 function Spacer() {
-  return <div className="w-32 h-32 hidden md:block" />;
+  return <div className="aspect-square h-fit hidden md:block" />;
 }
 
 export default function Page() {
@@ -55,7 +51,7 @@ export default function Page() {
       slug: "make-values-easy-to-guess",
       title: "「変数の値を推測しやすくする」と読みやすいプログラムになる",
       category: "tech",
-      writtenAt: "2024/01/21",
+      writtenAt: new Date(2024, 5, 20),
     },
   ];
   return (

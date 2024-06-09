@@ -1,17 +1,18 @@
+import React from "react";
+import Switch from "~/components/Switch";
 import Header1 from "~/components/articles/Header1";
 import Header2 from "~/components/articles/Header2";
 import Header3 from "~/components/articles/Header3";
 import Paragraph from "~/components/articles/Paragraph";
 import Quote from "~/components/articles/Quote";
-import Switch from "~/components/Switch";
-import React from "react";
 import Sheet from "../Sheet";
+import SheetHeader from "../SheetHeader";
+import WrittenAt from "../WrittenAt";
 import BookIcon from "../icons/BookIcon";
-import ArticleMark from "../ArticleMark";
 
 export default function Article(props: {
   title: string;
-  writtenAt: string;
+  writtenAt: Date;
   Content: React.ComponentType<{
     components: {
       h1: React.ComponentType<{ children: React.ReactNode }>;
@@ -26,20 +27,16 @@ export default function Article(props: {
   const [summarized, setSummarized] = React.useState(false);
   return (
     <Sheet>
-      <div className="flex w-full rounded-iconic-3xl border-sub-color border-t-2 md:pr-6">
-        <ArticleMark Icon={BookIcon} />
-        <div className="m-4 w-full">
-          <h1 className="text-text-main font-bold text-md md:text-lg">{props.title}</h1>
-          <div className="flex justify-between items-end mt-2">
-            <div className="text-text-sub text-xs md:text-sm">{props.writtenAt}</div>
-            <Switch
-              actionName="Summarize"
-              state={summarized}
-              onSwitch={(state: boolean) => setSummarized(state)}
-            />
-          </div>
+      <SheetHeader Icon={BookIcon} title={props.title}>
+        <div className="flex justify-between items-end mt-2">
+          <WrittenAt date={props.writtenAt} />
+          <Switch
+            actionName="Summarize"
+            state={summarized}
+            onSwitch={(state: boolean) => setSummarized(state)}
+          />
         </div>
-      </div>
+      </SheetHeader>
       <div className="px-4 md:px-8 pb-16">
         <props.Content
           components={{
