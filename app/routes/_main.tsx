@@ -6,6 +6,7 @@ import ArticleIcon from "~/components/icons/ArticleIcon";
 import HanburgerIcon from "~/components/icons/HanburgerIcon";
 import HomeIcon from "~/components/icons/HomeIcon";
 import PersonIcon from "~/components/icons/PersonIcon";
+import PieceIcon from "~/components/icons/PieceIcon";
 import GitHub from "~/components/logos/GitHub";
 import X from "~/components/logos/X";
 import Zenn from "~/components/logos/Zenn";
@@ -49,6 +50,12 @@ export default function Index() {
           </Link>
           <Link to="/articles">
             <ArticleIcon
+              type="solid"
+              className="w-10 h-10 text-geb-blue hover:scale-110 transition-transform duration-300"
+            />
+          </Link>
+          <Link to="/knowledge-pieces">
+            <PieceIcon
               type="solid"
               className="w-10 h-10 text-geb-blue hover:scale-110 transition-transform duration-300"
             />
@@ -115,6 +122,12 @@ export default function Index() {
                   className="w-10 h-10 text-geb-blue hover:scale-110 transition-transform duration-300"
                 />
               </Link>
+              <Link to="/knowledge-pieces">
+                <PieceIcon
+                  type="solid"
+                  className="w-10 h-10 text-geb-blue hover:scale-110 transition-transform duration-300"
+                />
+              </Link>
               <div className="h-0 border border-border-color w-12" />
               <a href="https://github.com/Geb-algebra">
                 <GitHub
@@ -139,7 +152,9 @@ export default function Index() {
         </div>
       </nav>
       <main className="px-4 py-16 md:ml-40 md:px-12 md:py-32">
-        <Outlet />
+        <div className="max-w-4xl mx-auto">
+          <Outlet />
+        </div>
       </main>
     </div>
   );
