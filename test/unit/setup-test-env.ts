@@ -1,4 +1,4 @@
-import { installGlobals } from "@remix-run/node";
+import { installGlobals } from "react-router";
 import { server } from "mocks/mock-server.ts";
 import { beforeEach } from "vitest";
 

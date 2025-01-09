@@ -1,7 +1,7 @@
 import devserver, { defaultOptions } from "@hono/vite-dev-server";
 import adapter from "@hono/vite-dev-server/cloudflare";
 import mdx from "@mdx-js/rollup";
-import { vitePlugin as remix } from "@remix-run/dev";
+import { reactRouter } from "@react-router/dev/vite";
 import rehypePrettyCode from "rehype-pretty-code";
 import { remixDevTools } from "remix-development-tools";
 import { flatRoutes } from "remix-flat-routes";
@@ -23,20 +23,7 @@ export default defineConfig({
     mdx({
       rehypePlugins: [[rehypePrettyCode, { theme: "nord" }]],
     }),
-    remix({
-      ignoredRouteFiles: ["**/*"],
-      routes: async (defineRoutes) => {
-        return flatRoutes("routes", defineRoutes);
-      },
-      future: {
-        v3_singleFetch: true,
-        v3_fetcherPersist: true,
-        v3_lazyRouteDiscovery: true,
-        v3_relativeSplatPath: true,
-        v3_throwAbortReason: true,
-        unstable_optimizeDeps: true,
-      },
-    }),
+    reactRouter(),
     tsconfigPaths(),
   ],
   build: {

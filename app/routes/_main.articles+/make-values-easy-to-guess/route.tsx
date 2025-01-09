@@ -1,4 +1,4 @@
-import type { HeadersFunction, MetaFunction } from "@remix-run/cloudflare";
+import type { HeadersFunction, MetaFunction } from "react-router";
 import Article from "~/components/articles/Article";
 import Content, { abstract, title, writtenAt } from "./content.mdx";
 

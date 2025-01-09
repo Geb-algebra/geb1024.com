@@ -1,5 +1,5 @@
-import type { MetaFunction } from "@remix-run/cloudflare";
-import { Link, Outlet } from "@remix-run/react";
+import type { MetaFunction } from "react-router";
+import { Link, Outlet } from "react-router";
 import { useState } from "react";
 import GebMoon from "~/components/GebMoon.tsx";
 import ArticleIcon from "~/components/icons/ArticleIcon";

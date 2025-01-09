@@ -1,4 +1,4 @@
-import type { HeadersFunction, MetaFunction } from "@remix-run/cloudflare";
+import type { HeadersFunction, MetaFunction } from "react-router";
 import type { ReactNode } from "react";
 import Sheet from "~/components/Sheet";
 import CategoryTop from "~/components/layouts/CategoryTop";

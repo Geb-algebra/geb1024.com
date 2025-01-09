@@ -7,6 +7,8 @@ node_modules
 /public/build
 .env
 .dev.vars
+.react-router/
+.wrangler/
 
 /test-results/
 /playwright-report/
