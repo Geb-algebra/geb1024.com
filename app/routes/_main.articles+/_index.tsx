@@ -2,9 +2,9 @@ import type { HeadersFunction, MetaFunction } from "react-router";
 import LinkToSheet from "~/components/LinkToSheet";
 import SheetHeader from "~/components/SheetHeader";
 import WrittenAt from "~/components/WrittenAt";
-import BookIcon from "~/components/icons/BookIcon.tsx";
-import BriefCaseIcon from "~/components/icons/BriefCaseIcon.tsx";
-import CommandLineIcon from "~/components/icons/CommandLineIcon.tsx";
+import BookIcon from "~/components/icons/BookIcon";
+import BriefCaseIcon from "~/components/icons/BriefCaseIcon";
+import CommandLineIcon from "~/components/icons/CommandLineIcon";
 import type { IconComponent } from "~/components/icons/types.ts";
 import CategoryTop from "~/components/layouts/CategoryTop";
 

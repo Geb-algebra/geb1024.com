@@ -1,5 +1,4 @@
 import type { HeadersFunction, MetaFunction } from "react-router";
-import type { ReactNode } from "react";
 import Sheet from "~/components/Sheet";
 import CategoryTop from "~/components/layouts/CategoryTop";
 
@@ -20,7 +19,7 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-function Paragraph(props: { children: ReactNode }) {
+function Paragraph(props: { children: React.ReactNode }) {
   return <p className="my-6 text-lg text-geb-blue">{props.children}</p>;
 }
 

@@ -1,15 +1,10 @@
-node_modules
-
-/locals
-/.cache
-/build
-/server-build
-/public/build
-.env
-.dev.vars
-.react-router/
+.DS_Store
+/node_modules/
 .wrangler/
 
-/test-results/
-/playwright-report/
-/playwright/.cache/
+# React Router
+/.react-router/
+/build/
+
+
+/locals

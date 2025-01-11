@@ -1,32 +1,26 @@
-import devserver, { defaultOptions } from "@hono/vite-dev-server";
-import adapter from "@hono/vite-dev-server/cloudflare";
 import mdx from "@mdx-js/rollup";
 import { reactRouter } from "@react-router/dev/vite";
+import { cloudflareDevProxy } from "@react-router/dev/vite/cloudflare";
+import autoprefixer from "autoprefixer";
+import { reactRouterHonoServer } from "react-router-hono-server/dev";
 import rehypePrettyCode from "rehype-pretty-code";
-import { remixDevTools } from "remix-development-tools";
-import { flatRoutes } from "remix-flat-routes";
+import tailwindcss from "tailwindcss";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  server: {
-    port: 3000,
+  css: {
+    postcss: {
+      plugins: [tailwindcss, autoprefixer],
+    },
   },
   plugins: [
-    devserver({
-      adapter,
-      entry: "server.ts",
-      exclude: [...defaultOptions.exclude, "/assets/**", "/app/**"],
-      injectClientScript: false,
-    }),
-    remixDevTools(),
+    cloudflareDevProxy(),
+    reactRouterHonoServer(),
     mdx({
       rehypePlugins: [[rehypePrettyCode, { theme: "nord" }]],
     }),
     reactRouter(),
     tsconfigPaths(),
   ],
-  build: {
-    target: "ES2022",
-  },
 });

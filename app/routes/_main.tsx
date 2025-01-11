@@ -1,7 +1,7 @@
+import { useState } from "react";
 import type { MetaFunction } from "react-router";
 import { Link, Outlet } from "react-router";
-import { useState } from "react";
-import GebMoon from "~/components/GebMoon.tsx";
+import GebMoon from "~/components/GebMoon";
 import ArticleIcon from "~/components/icons/ArticleIcon";
 import HanburgerIcon from "~/components/icons/HanburgerIcon";
 import HomeIcon from "~/components/icons/HomeIcon";
