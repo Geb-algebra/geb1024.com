@@ -1,7 +1,7 @@
 name = "geb1024-com"
 workers_dev = true
 compatibility_date = "2024-04-01"
-main = "./build/server/index.js"
+main = "./worker.ts"
 
 [assets]
 directory = "./build/client/"
