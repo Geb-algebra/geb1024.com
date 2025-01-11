@@ -7,6 +7,7 @@ import BriefCaseIcon from "~/components/icons/BriefCaseIcon";
 import CommandLineIcon from "~/components/icons/CommandLineIcon";
 import type { IconComponent } from "~/components/icons/types.ts";
 import CategoryTop from "~/components/layouts/CategoryTop";
+import { type ArticleInfo, allArticles } from "./all-articles";
 
 export const headers: HeadersFunction = () => {
   return {
@@ -16,13 +17,6 @@ export const headers: HeadersFunction = () => {
 
 export const meta: MetaFunction = () => {
   return [{ title: "Blog Posts" }];
-};
-
-export type ArticleInfo = {
-  slug: string;
-  title: string;
-  category: string;
-  writtenAt: Date;
 };
 
 function Article(props: { article: ArticleInfo }) {
@@ -46,18 +40,10 @@ function Spacer() {
 }
 
 export default function Page() {
-  const articles = [
-    {
-      slug: "make-values-easy-to-guess",
-      title: "「変数の値を推測しやすくする」と読みやすいプログラムになる",
-      category: "tech",
-      writtenAt: new Date(2024, 5, 20),
-    },
-  ];
   return (
     <CategoryTop title="Blog Posts">
       <ul>
-        {articles.map((article, index) => (
+        {allArticles.map((article, index) => (
           <li key={article.slug} className="flex my-12">
             {index % 2 === 1 && <Spacer />}
             <Article article={article} />
