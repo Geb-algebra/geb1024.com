@@ -1,4 +1,4 @@
-import type { MetaFunction } from "@remix-run/react";
+import type { MetaFunction } from "react-router";
 import Figure from "~/components/knowledge-pieces/Figure";
 import KnowledgePiece from "~/components/knowledge-pieces/KnowledgePiece";
 import LinkToPiece from "~/components/knowledge-pieces/LinkToPiece";

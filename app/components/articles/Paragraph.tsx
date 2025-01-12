@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import invariant from "tiny-invariant";
 
 // display keyline (the first sentence) and the rest with different colors
