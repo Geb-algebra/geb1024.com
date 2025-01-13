@@ -7,7 +7,7 @@ import BriefCaseIcon from "~/components/icons/BriefCaseIcon";
 import CommandLineIcon from "~/components/icons/CommandLineIcon";
 import type { IconComponent } from "~/components/icons/types.ts";
 import CategoryTop from "~/components/layouts/CategoryTop";
-import { type ArticleInfo, allArticles } from "./all-articles";
+import { type ArticleInfo, allArticles } from "~/contents/articles/all-articles";
 
 export const headers: HeadersFunction = () => {
   return {

@@ -7,7 +7,7 @@ import BriefCaseIcon from "~/components/icons/BriefCaseIcon";
 import CommandLineIcon from "~/components/icons/CommandLineIcon";
 import type { IconComponent } from "~/components/icons/types.ts";
 import CategoryTop from "~/components/layouts/CategoryTop";
-import { type ArticleInfo, allArticles } from "~/routes/_main.articles+/_index/all-articles";
+import { type ArticleInfo, allArticles } from "~/contents/articles/all-articles";
 
 export const headers: HeadersFunction = () => {
   return {
@@ -40,6 +40,7 @@ function Spacer() {
 }
 
 export default function Page() {
+  console.log(allArticles);
   return (
     <CategoryTop title="Blog Posts">
       <ul>

@@ -6,6 +6,9 @@ import tailwindcss from "tailwindcss";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
+import remarkFrontmatter from "remark-frontmatter";
+import remarkMdxFrontmatter from "remark-mdx-frontmatter";
+
 export default defineConfig({
   css: {
     postcss: {
@@ -14,6 +17,7 @@ export default defineConfig({
   },
   plugins: [
     mdx({
+      remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
       rehypePlugins: [[rehypePrettyCode, { theme: "nord" }]],
     }),
     reactRouter(),
