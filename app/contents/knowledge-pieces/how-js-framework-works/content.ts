@@ -1,4 +1,4 @@
-import type { KnowledgePiece } from "../all-knowledge-pieces.server";
+import type { KnowledgePiece } from "~/domain/models";
 import slide from "./slide.svg";
 
 export default {
@@ -11,4 +11,4 @@ export default {
   ],
   figure: slide,
   related: ["spa-ssr"],
-};
+} as KnowledgePiece;

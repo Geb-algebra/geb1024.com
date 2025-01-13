@@ -1,3 +1,4 @@
+import type { KnowledgePiece } from "~/domain/models";
 import slide from "./slide.svg";
 
 export default {
@@ -14,4 +15,4 @@ export default {
   ],
   figure: slide,
   related: ["how-js-framework-works"],
-};
+} as KnowledgePiece;

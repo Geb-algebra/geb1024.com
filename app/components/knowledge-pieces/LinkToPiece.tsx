@@ -1,4 +1,4 @@
-import type { KnowledgePiece } from "~/contents/knowledge-pieces/all-knowledge-pieces.server";
+import type { KnowledgePiece } from "~/domain/models";
 import LinkToSheet from "../LinkToSheet";
 import SheetHeader from "../SheetHeader";
 import WrittenAt from "../WrittenAt";

@@ -1,6 +1,6 @@
 import type { Config } from "@react-router/dev/config";
-import { allArticles } from "./app/contents/articles/all-articles";
-import { allKnowledgePieces } from "./app/contents/knowledge-pieces/all-knowledge-pieces.server";
+import { getAllArticles } from "./app/domain/articles/get-all-articles.server";
+import { getAllKnowledgePieces } from "./app/domain/knowledge-pieces/get-all-knowledge-pieces.server";
 
 export default {
   // Config options...
@@ -8,7 +8,7 @@ export default {
   ssr: true,
   prerender: async ({ getStaticPaths }) => [
     ...getStaticPaths(),
-    ...allArticles.map((slug) => `/articles/${slug}`),
-    ...allKnowledgePieces.map((piece) => `/knowledge-pieces/${piece.slug}`),
+    ...getAllArticles().map((slug) => `/articles/${slug}`),
+    ...getAllKnowledgePieces().map((piece) => `/knowledge-pieces/${piece.slug}`),
   ],
 } satisfies Config;

@@ -1,20 +1,16 @@
 import { getMDXComponent } from "mdx-bundler/client/index.js";
 import React from "react";
-import { bundlePost } from "~/services/mdx.server";
-import type { Route } from "./+types/$slug";
+import { bundlePost } from "~/domain/articles/services.server";
+import type { Route } from "./+types/route";
 
 import { isRouteErrorResponse, useLoaderData, useRouteError } from "react-router";
 import Sheet from "~/components/Sheet";
 import SheetHeader from "~/components/SheetHeader";
-import Spacer from "~/components/Spacer";
 import Switch from "~/components/Switch";
 import WrittenAt from "~/components/WrittenAt";
-import Header1 from "~/components/articles/Header1";
-import Header2 from "~/components/articles/Header2";
-import Header3 from "~/components/articles/Header3";
-import Paragraph from "~/components/articles/Paragraph";
-import Quote from "~/components/articles/Quote";
 import BookIcon from "~/components/icons/BookIcon";
+import Paragraph from "~/routes/_main.articles+/$slug/Paragraph";
+import Quote from "~/routes/_main.articles+/$slug/Quote";
 
 export async function loader({ request, params }: Route.LoaderArgs) {
   if (!params.slug) {
@@ -61,9 +57,15 @@ export default function Article() {
       <div className="px-4 md:px-8 pb-16">
         <Component
           components={{
-            h1: (props) => <Header1 {...props} />,
-            h2: (props) => <Header2 {...props} />,
-            h3: (props) => <Header3 {...props} />,
+            h1: (props) => (
+              <h1 className="font-bold text-geb-blue text-2xl mt-24 mb-12">{props.children}</h1>
+            ),
+            h2: (props) => (
+              <h2 className="font-bold text-geb-blue text-xl mt-12 mb-9">{props.children}</h2>
+            ),
+            h3: (props) => (
+              <h3 className="font-bold text-geb-blue text-lg mt-9 mb-6">{props.children}</h3>
+            ),
             p: (props) => <Paragraph {...{ ...props, summarized }} />,
             pre: (props) => <pre {...props} className="p-4 rounded-lg overflow-auto" />,
             blockquote: (props) => <Quote {...props} />,

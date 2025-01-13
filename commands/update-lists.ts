@@ -1,5 +1,4 @@
-import { updateAllArticles } from "./update-article-list";
 import { updateAllKnowledgePieces } from "./update-knowledge-piece-list";
 
-updateAllArticles();
+// no need to update all-articles.server.ts as it dynamically return all articles
 updateAllKnowledgePieces();

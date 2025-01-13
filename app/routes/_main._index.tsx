@@ -7,8 +7,9 @@ import BriefCaseIcon from "~/components/icons/BriefCaseIcon";
 import CommandLineIcon from "~/components/icons/CommandLineIcon";
 import type { IconComponent } from "~/components/icons/types.ts";
 import CategoryTop from "~/components/layouts/CategoryTop";
-import { type ArticleInfo, allArticles } from "~/contents/articles/all-articles";
-import { bundlePost } from "~/services/mdx.server";
+import { getAllArticles } from "~/domain/articles/get-all-articles.server";
+import { bundlePost } from "~/domain/articles/services.server";
+import type { Article } from "~/domain/models";
 import type { Route } from "./+types/_main._index";
 
 export const headers: HeadersFunction = () => {
@@ -17,9 +18,11 @@ export const headers: HeadersFunction = () => {
   };
 };
 
+// FIXME: throws "cannot read properties of undefined (reading 'map')" only in devserver
+// prerendering works fine
 export async function loader() {
-  return Promise.all(
-    allArticles.map(async (slug) => {
+  return await Promise.all(
+    getAllArticles().map(async (slug) => {
       const { frontmatter } = await bundlePost(slug);
       return {
         slug,
@@ -27,7 +30,7 @@ export async function loader() {
         category: frontmatter.category,
         abstract: frontmatter.abstract,
         writtenAt: new Date(frontmatter.writtenAt),
-      } as ArticleInfo;
+      } as Article;
     }),
   );
 }
@@ -36,7 +39,7 @@ export const meta: MetaFunction = () => {
   return [{ title: "Blog Posts" }];
 };
 
-function Article(props: { article: ArticleInfo }) {
+function ArticleItem(props: { article: Article }) {
   const icons: { [key: string]: IconComponent } = {
     books: BookIcon,
     tech: CommandLineIcon,
@@ -63,7 +66,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
         {loaderData.map((article, index) => (
           <li key={article.slug} className="flex my-12">
             {index % 2 === 1 && <Spacer />}
-            <Article article={article} />
+            <ArticleItem article={article} />
             {index % 2 === 0 && <Spacer />}
           </li>
         ))}

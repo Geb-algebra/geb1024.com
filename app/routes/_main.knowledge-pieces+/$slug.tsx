@@ -1,21 +1,21 @@
-import type { MetaFunction } from "react-router";
-import Figure from "~/components/knowledge-pieces/Figure";
-import KnowledgePiece from "~/components/knowledge-pieces/KnowledgePiece";
 import LinkToPiece from "~/components/knowledge-pieces/LinkToPiece";
 import LinkToPieceList from "~/components/knowledge-pieces/LinkToPieceList";
-import Paragraph from "~/components/knowledge-pieces/Paragraph";
 import type { Route } from "./+types/$slug";
 
-import { allKnowledgePieces } from "~/contents/knowledge-pieces/all-knowledge-pieces.server";
+import Sheet from "~/components/Sheet";
+import SheetHeader from "~/components/SheetHeader";
+import WrittenAt from "~/components/WrittenAt";
+import PieceIcon from "~/components/icons/PieceIcon";
+import { getAllKnowledgePieces } from "~/domain/knowledge-pieces/get-all-knowledge-pieces.server";
 
 export async function loader({ request, params }: Route.LoaderArgs) {
-  const knowledgePiece = allKnowledgePieces.find((piece) => piece.slug === params.slug);
+  const knowledgePiece = getAllKnowledgePieces().find((piece) => piece.slug === params.slug);
   if (!knowledgePiece) {
     return null;
   }
   return {
     knowledgePiece,
-    relatedPieces: allKnowledgePieces.filter((piece) =>
+    relatedPieces: getAllKnowledgePieces().filter((piece) =>
       knowledgePiece.related.includes(piece.slug),
     ),
   };
@@ -41,14 +41,21 @@ export default function Page({ loaderData }: Route.ComponentProps) {
   const { knowledgePiece, relatedPieces } = loaderData;
   return (
     <>
-      <KnowledgePiece title={knowledgePiece.title} date={knowledgePiece.date}>
-        <Figure>
-          <img src={knowledgePiece.figure} alt={knowledgePiece.title} />
-        </Figure>
-        {knowledgePiece.content.map((text) => (
-          <Paragraph key={text}>{text}</Paragraph>
-        ))}
-      </KnowledgePiece>
+      <Sheet className="relative">
+        <SheetHeader Icon={PieceIcon} title={knowledgePiece.title}>
+          <WrittenAt date={knowledgePiece.date} />
+        </SheetHeader>
+        <div className="px-6 pt-6 pb-12">
+          <div className="w-full aspect-video sticky top-0 py-4 backdrop-blur-md">
+            <img src={knowledgePiece.figure} alt={knowledgePiece.title} />
+          </div>
+          {knowledgePiece.content.map((text) => (
+            <p key={text} className="my-6 font-md leading-7">
+              {text}
+            </p>
+          ))}
+        </div>
+      </Sheet>
       <h2 className="text-2xl font-bold mt-12 mb-4">Related Pieces</h2>
       <LinkToPieceList>
         {relatedPieces.map((piece) => (

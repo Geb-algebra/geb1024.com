@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import { bundleMDX } from "mdx-bundler";
 import rehypePrettyCode from "rehype-pretty-code";
+import type { Article } from "~/domain/models";
 
 export async function bundlePost(slug: string) {
   const path = `${process.cwd()}/app/contents/articles/${slug}`;
@@ -27,20 +28,13 @@ export async function bundlePost(slug: string) {
   });
 }
 
-export type ArticleInfo = {
-  slug: string;
-  title: string;
-  category: string;
-  writtenAt: string; // yyyy/mm/dd
-};
-
 // get array of directory name in app/articles/{category}
 export async function listAllArticles() {
   const dirs = fs.readdirSync(`${process.cwd()}/app/articles`);
-  const articles: ArticleInfo[] = await Promise.all(
+  const articles: Article[] = await Promise.all(
     dirs.map(async (slug) => {
       const { frontmatter } = await bundlePost(`${slug}`);
-      return { slug, ...frontmatter } as ArticleInfo;
+      return { slug, ...frontmatter } as Article;
     }),
   );
   articles.sort((a, b) => {
