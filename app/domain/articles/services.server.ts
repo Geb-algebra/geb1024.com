@@ -22,7 +22,10 @@ export async function bundlePost(slug: string) {
       return options;
     },
     mdxOptions(options, frontmatter) {
-      options.rehypePlugins = [...(options.rehypePlugins ?? []), rehypePrettyCode];
+      options.rehypePlugins = [
+        ...(options.rehypePlugins ?? []),
+        [rehypePrettyCode, { theme: "nord" }],
+      ];
       return options;
     },
   });
