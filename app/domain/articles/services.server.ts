@@ -36,7 +36,7 @@ export async function listAllArticles() {
   const dirs = fs.readdirSync(`${process.cwd()}/app/articles`);
   const articles: Article[] = await Promise.all(
     dirs.map(async (slug) => {
-      const { frontmatter } = await bundlePost(`${slug}`);
+      const { frontmatter } = await bundlePost(slug);
       return { slug, ...frontmatter } as Article;
     }),
   );

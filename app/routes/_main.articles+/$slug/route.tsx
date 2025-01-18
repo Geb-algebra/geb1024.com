@@ -68,6 +68,13 @@ export default function Article() {
             ),
             p: (props) => <Paragraph {...{ ...props, summarized }} />,
             pre: (props) => <pre {...props} className="p-4 rounded-lg overflow-auto" />,
+            a: (props) => (
+              <a
+                {...props}
+                target="_blank"
+                className="text-blue-800 underline rounded-md p-1 hover:bg-slate-200 focus:bg-slate-200"
+              />
+            ),
             blockquote: (props) => <Quote {...props} />,
           }}
         />

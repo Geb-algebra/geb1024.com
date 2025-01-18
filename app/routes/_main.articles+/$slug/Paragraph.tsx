@@ -7,15 +7,26 @@ import invariant from "tiny-invariant";
 export default function Paragraph(props: { summarized: boolean; children?: React.ReactNode }) {
   // manipulating Children is not recommended.
   const children = React.Children.toArray(props.children);
-  const firstSentence = children[0];
-  invariant(typeof firstSentence === "string", "The beginning of a paragraph must be a string");
-  const [keyline, ...rest] = firstSentence.split("\n");
+  // get the index of first child that is a string and has \n
+  const index = children.findIndex((child) => typeof child === "string" && child.includes("\n"));
+  let keyline = [];
+  let rest: typeof children = [];
+  if (index === -1) {
+    keyline = children;
+    rest = [];
+  } else {
+    const sepChild = children[index];
+    invariant(
+      typeof sepChild === "string",
+      `First child must be a string, found ${typeof sepChild}`,
+    );
+    keyline = [...children.slice(0, index), sepChild.split("\n")[0]];
+    rest = [...sepChild.split("\n").slice(1).join("\n"), ...children.slice(index + 1)];
+  }
   return (
-    <div className="my-6 font-lg leading-7">
+    <p className="my-6 font-lg leading-7">
       <span className="text-text-main font-[500]">{keyline}</span>
-      {props.summarized ? null : (
-        <span className="text-text-sub">{[rest.join(""), ...children.slice(1)]}</span>
-      )}
-    </div>
+      {props.summarized ? null : <span className="text-text-sub">{rest}</span>}
+    </p>
   );
 }
