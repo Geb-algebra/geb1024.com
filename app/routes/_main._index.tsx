@@ -1,11 +1,8 @@
+import { BookOpenIcon, BriefcaseBusinessIcon, TerminalSquareIcon } from "lucide-react";
 import type { HeadersFunction, MetaFunction } from "react-router";
 import LinkToSheet from "~/components/LinkToSheet";
 import SheetHeader from "~/components/SheetHeader";
 import WrittenAt from "~/components/WrittenAt";
-import BookIcon from "~/components/icons/BookIcon";
-import BriefCaseIcon from "~/components/icons/BriefCaseIcon";
-import CommandLineIcon from "~/components/icons/CommandLineIcon";
-import type { IconComponent } from "~/components/icons/types.ts";
 import CategoryTop from "~/components/layouts/CategoryTop";
 import { getAllArticles } from "~/domain/articles/get-all-articles.server";
 import { bundlePost } from "~/domain/articles/services.server";
@@ -18,8 +15,6 @@ export const headers: HeadersFunction = () => {
   };
 };
 
-// FIXME: throws "cannot read properties of undefined (reading 'map')" only in devserver
-// prerendering works fine
 export async function loader() {
   return await Promise.all(
     getAllArticles().map(async (slug) => {
@@ -40,15 +35,9 @@ export const meta: MetaFunction = () => {
 };
 
 function ArticleItem(props: { article: Article }) {
-  const icons: { [key: string]: IconComponent } = {
-    books: BookIcon,
-    tech: CommandLineIcon,
-    jobsCareers: BriefCaseIcon,
-  };
-  const Icon = icons[props.article.category];
   return (
-    <LinkToSheet to={`/articles/${props.article.slug}`}>
-      <SheetHeader Icon={Icon} title={props.article.title}>
+    <LinkToSheet to={`/articles/${props.article.slug}`} className="w-full">
+      <SheetHeader category={props.article.category} title={props.article.title}>
         <WrittenAt date={props.article.writtenAt} />
       </SheetHeader>
     </LinkToSheet>
@@ -56,10 +45,11 @@ function ArticleItem(props: { article: Article }) {
 }
 
 function Spacer() {
-  return <div className="aspect-square h-fit hidden md:block" />;
+  return <div className="h-24 w-24 hidden md:block" />;
 }
 
 export default function Page({ loaderData }: Route.ComponentProps) {
+  loaderData.sort((a, b) => b.writtenAt.getTime() - a.writtenAt.getTime());
   return (
     <CategoryTop title="Blog Posts">
       <ul>

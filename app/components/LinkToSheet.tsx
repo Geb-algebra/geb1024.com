@@ -1,10 +1,16 @@
 import { Link } from "react-router";
+import { cn } from "~/utils/css";
+import { floating } from "./styles";
 
-export default function LinkToSheet(props: { to: string; children?: React.ReactNode }) {
+export default function LinkToSheet(props: {
+  to: string;
+  children?: React.ReactNode;
+  className?: string;
+}) {
   return (
     <Link
       to={props.to}
-      className="rounded-iconic-3xl hover:scale-105 hover:bg-paper-color hover:shadow-float transition-all duration-500"
+      className={cn("rounded-iconic-3xl", props.className, floating.hover, floating.focusVisible)}
     >
       {props.children}
     </Link>

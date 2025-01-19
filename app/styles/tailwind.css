@@ -17,6 +17,16 @@
     font-family: "Assistant";
     src: url("https://excalidraw.com/Assistant-Regular.woff2");
   }
+
+  :root {
+    --geb-blue: #002538;
+    --base-color: #f0f0e0;
+    --paper-color: #fffff0;
+    --sub-color: #a2a2ad;
+    --text-main: #002538;
+    --text-sub: #63676b;
+    --border-color: #ccc5b8;
+  }
 }
 
 @layer utilities {

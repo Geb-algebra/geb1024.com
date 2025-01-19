@@ -5,13 +5,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        "geb-blue": "#002538",
-        "base-color": "#f0f0e0",
-        "paper-color": "#fffff0",
-        "sub-color": "#a2a2ad",
-        "text-main": "#002538",
-        "text-sub": "#63676b",
-        "border-color": "#ccc5b8",
+        "geb-blue": "var(--geb-blue)",
+        "base-color": "var(--base-color)",
+        "paper-color": "var(--paper-color)",
+        "sub-color": "var(--sub-color)",
+        "text-main": "var(--text-main)",
+        "text-sub": "var(--text-sub)",
+        "border-color": "var(--border-color)",
       },
       fontFamily: {
         sans: ['"Ubuntu"', '"Noto Sans JP"', "sans-serif"],

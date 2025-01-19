@@ -1,8 +1,9 @@
+import type { ArticleCategory } from "~/domain/models";
+import { cn } from "~/utils/css";
 import ArticleMark from "./ArticleMark";
-import type { IconComponent } from "./icons/types";
 
 export default function SheetHeader(props: {
-  Icon: IconComponent;
+  category: ArticleCategory | "knowledgePiece";
   title: string;
   forceSmallHeader?: boolean;
   children?: React.ReactNode;
@@ -10,14 +11,18 @@ export default function SheetHeader(props: {
   const forceSmall = props.forceSmallHeader || false;
   return (
     <div
-      className={`flex w-full h-fit rounded-iconic-3xl border-sub-color border-t-2 ${
-        forceSmall ? "md:pr-6" : ""
-      }`}
+      className={cn(
+        "flex w-full h-fit rounded-iconic-3xl border-sub-color border-t-2",
+        forceSmall ? "md:pr-6" : "",
+      )}
     >
-      <ArticleMark Icon={props.Icon} forceSmall={forceSmall} />
-      <div className={`mx-4 mt-2 w-full ${!forceSmall ? "md:mt-4" : ""}`}>
+      <ArticleMark category={props.category} forceSmall={forceSmall} />
+      <div className={cn("mx-4 mt-2 w-full", !forceSmall ? "md:mt-4" : "")}>
         <h1
-          className={`text-text-main font-bold text-md min-h-10 ${!forceSmall ? "md:text-lg" : ""}`}
+          className={cn(
+            "text-text-main font-bold text-md min-h-10",
+            !forceSmall ? "md:text-lg" : "",
+          )}
         >
           {props.title}
         </h1>

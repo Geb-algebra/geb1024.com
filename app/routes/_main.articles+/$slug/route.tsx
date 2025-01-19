@@ -8,9 +8,10 @@ import Sheet from "~/components/Sheet";
 import SheetHeader from "~/components/SheetHeader";
 import Switch from "~/components/Switch";
 import WrittenAt from "~/components/WrittenAt";
-import BookIcon from "~/components/icons/BookIcon";
+import { floating, ringOnFocusVisible } from "~/components/styles";
 import Paragraph from "~/routes/_main.articles+/$slug/Paragraph";
 import Quote from "~/routes/_main.articles+/$slug/Quote";
+import { cn } from "~/utils/css";
 
 export async function loader({ request, params }: Route.LoaderArgs) {
   if (!params.slug) {
@@ -44,12 +45,13 @@ export default function Article() {
   const [summarized, setSummarized] = React.useState(false);
   return (
     <Sheet>
-      <SheetHeader Icon={BookIcon} title={frontmatter.title}>
+      <SheetHeader title={frontmatter.title} category={frontmatter.category}>
         <div className="flex justify-between items-end mt-2">
           <WrittenAt date={new Date(frontmatter.writtenAt)} />
           <Switch
             actionName="Summarize"
             state={summarized}
+            id="summarize-switch"
             onSwitch={(state: boolean) => setSummarized(state)}
           />
         </div>
@@ -72,7 +74,12 @@ export default function Article() {
               <a
                 {...props}
                 target="_blank"
-                className="text-blue-800 underline rounded-md p-1 hover:bg-slate-200 focus:bg-slate-200"
+                className={cn(
+                  "text-blue-800 underline rounded-iconic-md p-1",
+                  floating.hover,
+                  floating.focusVisible,
+                  ringOnFocusVisible,
+                )}
               />
             ),
             blockquote: (props) => <Quote {...props} />,

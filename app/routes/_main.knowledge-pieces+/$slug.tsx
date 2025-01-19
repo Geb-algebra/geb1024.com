@@ -5,7 +5,6 @@ import type { Route } from "./+types/$slug";
 import Sheet from "~/components/Sheet";
 import SheetHeader from "~/components/SheetHeader";
 import WrittenAt from "~/components/WrittenAt";
-import PieceIcon from "~/components/icons/PieceIcon";
 import { getAllKnowledgePieces } from "~/domain/knowledge-pieces/get-all-knowledge-pieces.server";
 
 export async function loader({ request, params }: Route.LoaderArgs) {
@@ -42,7 +41,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
   return (
     <>
       <Sheet className="relative">
-        <SheetHeader Icon={PieceIcon} title={knowledgePiece.title}>
+        <SheetHeader category="knowledgePiece" title={knowledgePiece.title}>
           <WrittenAt date={knowledgePiece.date} />
         </SheetHeader>
         <div className="px-6 pt-6 pb-12">

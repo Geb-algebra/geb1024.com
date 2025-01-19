@@ -1,7 +1,9 @@
+export type ArticleCategory = "books" | "tech" | "jobsCareers";
+
 export type Article = {
   slug: string;
   title: string;
-  category: string;
+  category: ArticleCategory;
   abstract: string;
   writtenAt: Date;
 };
