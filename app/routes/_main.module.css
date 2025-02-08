@@ -1,0 +1,68 @@
+
+.body-layout {
+  width: 100%;
+  height: screen;
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  grid-template-rows: 80px 1fr;
+  grid-template-areas:
+    "logo name"
+    "main main";
+    /* nav is placed here as an absolutely-positioned bar */
+  align-items: center;
+  justify-items: start;
+  gap: 0 16px;
+}
+
+.logo {
+  grid-area: logo;
+}
+
+.name {
+  grid-area: name;
+}
+
+.nav {
+  position: fixed;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 40px) 8px repeat(3, 40px);
+  grid-template-rows: 1fr;
+  grid-auto-flow: column;
+  gap: 4px;
+  justify-items: center;
+  justify-content: center;
+}
+
+.main-layout {
+  grid-area: main;
+
+  justify-self: stretch;
+  align-self: stretch;
+}
+
+@media screen and (min-width: 768px) {
+  .body-layout {
+    grid-template-columns: 144px 1fr;
+    grid-template-rows: 144px 48px 1fr;
+    grid-template-areas: 
+      "logo main"
+      "name main"
+      "nav  main";
+    justify-items: center;
+    align-items: start;
+    gap: 16px 0;
+  }
+  .nav {
+    position: relative;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 64px) 16px repeat(3, 64px);
+    grid-auto-flow: row;
+    align-items: start;
+    align-content: start;
+  }
+  .main-layout {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}

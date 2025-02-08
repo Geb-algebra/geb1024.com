@@ -44,20 +44,14 @@ function ArticleItem(props: { article: Article }) {
   );
 }
 
-function Spacer() {
-  return <div className="h-24 w-24 hidden md:block" />;
-}
-
 export default function Page({ loaderData }: Route.ComponentProps) {
   loaderData.sort((a, b) => b.writtenAt.getTime() - a.writtenAt.getTime());
   return (
     <CategoryTop title="Blog Posts">
-      <ul>
+      <ul className="flex flex-col gap-12">
         {loaderData.map((article, index) => (
-          <li key={article.slug} className="flex my-12">
-            {index % 2 === 1 && <Spacer />}
+          <li key={article.slug} className={index % 2 === 0 ? "md:pr-24 flex" : "md:pl-24 flex"}>
             <ArticleItem article={article} />
-            {index % 2 === 0 && <Spacer />}
           </li>
         ))}
       </ul>
