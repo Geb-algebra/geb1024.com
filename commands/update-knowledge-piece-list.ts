@@ -10,9 +10,7 @@ const allKnowledgePiecesFile = path.join(
 export async function updateAllKnowledgePieces() {
   const knowledgePieceSlugs = fs.readdirSync(knowledgePiecesDir);
   const knowledgePiecesImportStatement = knowledgePieceSlugs
-    .map(
-      (slug, i) => `import piece${i} from "../../app/contents/knowledge-pieces/${slug}/content";`,
-    )
+    .map((slug, i) => `import piece${i} from "../../contents/knowledge-pieces/${slug}/content";`)
     .join("\n");
 
   const knowledgePiecesArray = knowledgePieceSlugs.map((_, i) => `piece${i}`).join(", ");
