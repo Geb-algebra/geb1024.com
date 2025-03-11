@@ -20,7 +20,7 @@ export default function Paragraph(props: { summarized: boolean; children?: React
       typeof sepChild === "string",
       `First child must be a string, found ${typeof sepChild}`,
     );
-    keyline = [...children.slice(0, index), sepChild.split("\n")[0]];
+    keyline = [...children.slice(0, index), `${sepChild.split("\n")[0]}\n`];
     rest = [...sepChild.split("\n").slice(1).join("\n"), ...children.slice(index + 1)];
   }
   return (
