@@ -25,7 +25,7 @@ export default function Paragraph(props: { summarized: boolean; children?: React
   }
   return (
     <p className="my-6 font-lg leading-7">
-      <span className="text-text-main font-[500]">{keyline}</span>
+      <span className="text-text-main font-medium">{keyline}</span>
       {props.summarized ? null : <span className="text-text-sub">{rest}</span>}
     </p>
   );
