@@ -11,4 +11,11 @@ export default {
     ...getAllArticles().map((slug) => `/articles/${slug}`),
     ...getAllKnowledgePieces().map((piece) => `/knowledge-pieces/${piece.slug}`),
   ],
+  routeDiscovery: {
+    // to serve as a static site, I need to set this to avoid __manifest not found
+    mode: "initial",
+  },
+  future: {
+    unstable_viteEnvironmentApi: true,
+  },
 } satisfies Config;
