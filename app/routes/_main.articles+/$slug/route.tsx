@@ -9,6 +9,7 @@ import SheetHeader from "~/components/SheetHeader";
 import Switch from "~/components/Switch";
 import WrittenAt from "~/components/WrittenAt";
 import { floating, ringOnFocusVisible } from "~/components/styles";
+import List from "~/routes/_main.articles+/$slug/List";
 import Paragraph from "~/routes/_main.articles+/$slug/Paragraph";
 import Quote from "~/routes/_main.articles+/$slug/Quote";
 import { cn } from "~/utils/css";
@@ -83,6 +84,9 @@ export default function Article() {
               />
             ),
             blockquote: (props) => <Quote {...props} />,
+            ul: (props) => <List {...props} ordered={false} />,
+            ol: (props) => <List {...props} ordered={true} />,
+            li: (props) => <li className="pl-2" {...props} />,
           }}
         />
       </div>
