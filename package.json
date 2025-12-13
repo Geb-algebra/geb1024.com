@@ -12,7 +12,8 @@
     "check": "biome check --write",
     "typecheck": "pnpm run typegen && tsc",
     "validate": "pnpm run check && pnpm run typecheck",
-    "imagen": "tsx ./commands/generate-knowledge-piece-image.ts"
+    "imagen": "tsx ./commands/generate-knowledge-piece-image.ts",
+    "kp-template": "sh ./commands/kp-template.sh"
   },
   "dependencies": {
     "@radix-ui/react-hover-card": "^1.1.14",

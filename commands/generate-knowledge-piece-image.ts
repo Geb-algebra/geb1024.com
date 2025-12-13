@@ -10,13 +10,26 @@ const systemPrompt = `
 
 画像は以下を守って作成してください
 
+## 形式
+
 - 16x9のアスペクト比
 - 背景は #fffff0。 背景は#fffff0以外の色で描画
+- フレームの端いっぱいまで使って、なるべく大きく表示。 フレーム端のmarginは厳密にゼロ。
+
+## スタイル
+
 - 文字の使用は最小限にして、なるべくイラストで説明
 - 文字は英語で
-- 文字も図も手書き風で親しみやすく、でも「雑さ」は感じないように
+- excalidrawのような手書き風で、でも「雑さ」は感じないように
+- フォントはexcalifont、ただしコードのフォントはUbuntu mono。この後に添付する画像参照。
+- イラストのトーンはこの後に添付する画像に厳密に合わせる。 レイアウト・図の形式などはこの画像にこだわらず、トピックを一番よく説明できる方法で
+
+## 情報
+
+- あなたの画像はKnowledge Pieceの文章と一緒に提示されるので、全てが画像から伝わる必要はない。 Knowledge Pieceの全てを伝えようとしない。
+- タイトルは含めず、本文を伝えることに集中。 タイトルはOGPでもWebサイト上でも必ず画像と一緒に表示されるため。
+- タイトルを除いた、本文の最初の一文 が最重要情報なので、これだけは画像だけ見て理解できるようにする。 他は必要に応じて省くかイラスト表現。
 - OGP画像のサイズでトピックが把握でき、スマホ横幅一杯表示で全てが理解できるように、文字や図のサイズを調整（詰め込みすぎない）
-- フレームの端いっぱいまで使って、なるべく大きく表示。 端に余白を残さない
 `
 
 type Content = {
@@ -147,16 +160,40 @@ function askForModification(): Promise<string> {
   });
 }
 
+function loadSampleImage(): string {
+  const sampleImagePath = path.join(
+    process.cwd(),
+    "commands",
+    "sample-image.png",
+  );
+
+  if (!fs.existsSync(sampleImagePath)) {
+    throw new Error(`Sample image not found: ${sampleImagePath}`);
+  }
+
+  const imageBuffer = fs.readFileSync(sampleImagePath);
+  return imageBuffer.toString("base64");
+}
+
 async function generateImage(
   ai: GoogleGenAI,
   title: string,
   content: string[],
   chatHistory: Content[],
 ): Promise<Buffer> {
+  // サンプル画像を読み込む
+  const sampleImageBase64 = loadSampleImage();
+
   const systemInstruction = {
     parts: [
       {
         text: systemPrompt,
+      },
+      {
+        inlineData: {
+          mimeType: "image/png",
+          data: sampleImageBase64,
+        },
       },
     ],
   };
