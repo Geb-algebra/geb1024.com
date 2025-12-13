@@ -8,3 +8,5 @@
 
 
 /locals
+.env
+.dev.vars
