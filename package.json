@@ -11,7 +11,8 @@
     "typegen": "react-router typegen",
     "check": "biome check --write",
     "typecheck": "pnpm run typegen && tsc",
-    "validate": "pnpm run check && pnpm run typecheck"
+    "validate": "pnpm run check && pnpm run typecheck",
+    "imagen": "tsx ./commands/generate-knowledge-piece-image.ts"
   },
   "dependencies": {
     "@radix-ui/react-hover-card": "^1.1.14",
@@ -36,12 +37,14 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.1.1",
+    "@google/genai": "^1.33.0",
     "@react-router/dev": "^7.7.0",
     "@react-router/remix-routes-option-adapter": "^7.7.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "autoprefixer": "^10.4.21",
     "cross-env": "^7.0.3",
+    "dotenv": "^17.2.3",
     "esbuild": "^0.25.6",
     "mdx-bundler": "^10.1.1",
     "miniflare": "^4.20250712.0",
