@@ -1,5 +1,6 @@
-import { Slot } from "@radix-ui/react-slot";
-import { HomeIcon, NotebookPenIcon, PuzzleIcon, User2Icon } from "lucide-react";
+import { mergeProps } from "@base-ui/react/merge-props";
+import { useRender } from "@base-ui/react/use-render";
+import { HomeIcon, MenuIcon, NotebookPenIcon, PuzzleIcon, User2Icon } from "lucide-react";
 import type { MetaFunction } from "react-router";
 import { Link, NavLink, Outlet } from "react-router";
 import GebMoon from "~/components/GebMoon";
@@ -21,7 +22,19 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-function NavLinkIcon(props: { to: string; children: React.ReactNode }) {
+type IconSlotProps = Omit<useRender.ComponentProps<"span">, "children" | "render"> & {
+  children: React.ReactElement;
+};
+
+function IconSlot({ children, ...props }: IconSlotProps) {
+  return useRender({
+    defaultTagName: "span",
+    render: children,
+    props: mergeProps<"span">({ className: "w-6 md:w-10 h-full m-auto text-geb-blue" }, props),
+  });
+}
+
+function NavLinkIcon(props: { to: string; children: React.ReactElement }) {
   return (
     <NavLink
       to={props.to}
@@ -35,7 +48,7 @@ function NavLinkIcon(props: { to: string; children: React.ReactNode }) {
         )
       }
     >
-      <Slot className="w-6 md:w-10 h-full m-auto text-geb-blue">{props.children}</Slot>
+      <IconSlot>{props.children}</IconSlot>
     </NavLink>
   );
 }
@@ -45,7 +58,7 @@ function ExternalServiceIcon({
   ...props
 }: {
   href: string;
-  children: React.ReactNode;
+  children: React.ReactElement;
   small?: boolean;
 }) {
   return (
@@ -58,7 +71,7 @@ function ExternalServiceIcon({
         ringOnFocusVisible,
       )}
     >
-      <Slot className="w-6 md:w-10 h-full m-auto text-geb-blue">{props.children}</Slot>
+      <IconSlot>{props.children}</IconSlot>
     </a>
   );
 }

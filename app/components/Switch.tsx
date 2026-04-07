@@ -1,4 +1,4 @@
-import * as RadixSwitch from "@radix-ui/react-switch";
+import { Switch as BaseSwitch } from "@base-ui/react/switch";
 import { cn } from "~/utils/css";
 import { ringOnFocusVisible } from "./styles";
 
@@ -11,17 +11,19 @@ export default function Switch(props: {
 }) {
   return (
     <div className="flex items-center gap-3">
-      <RadixSwitch.Root
+      <BaseSwitch.Root
         checked={props.state}
         onCheckedChange={props.onSwitch}
         id={props.id}
+        nativeButton
+        render={<button type="button" />}
         className={cn(
-          "w-9 h-6 rounded-iconic-md flex justify-center items-center px-1 py-1 bg-sub-color data-[state=checked]:bg-geb-blue",
+          "w-9 h-6 rounded-iconic-md flex justify-center items-center px-1 py-1 border-0 bg-sub-color data-[checked]:bg-geb-blue",
           ringOnFocusVisible,
         )}
       >
-        <RadixSwitch.Thumb className="w-5 h-6 border-2 rounded-iconic-md transform transition-transform duration-300 ease-in-out bg-paper-color border-sub-color -translate-x-2 data-[state=checked]:border-geb-blue data-[state=checked]:translate-x-2" />
-      </RadixSwitch.Root>
+        <BaseSwitch.Thumb className="w-5 h-6 border-2 rounded-iconic-md transform transition-transform duration-300 ease-in-out bg-paper-color border-sub-color -translate-x-2 data-[checked]:border-geb-blue data-[checked]:translate-x-2" />
+      </BaseSwitch.Root>
       <label htmlFor={props.id} className="cursor-pointer">
         {props.actionName}
       </label>
