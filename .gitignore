@@ -10,3 +10,5 @@
 /locals
 .env
 .dev.vars
+*storybook.log
+storybook-static
