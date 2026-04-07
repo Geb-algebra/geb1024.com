@@ -21,7 +21,7 @@ export async function bundlePost(slug: string) {
       };
       return options;
     },
-    mdxOptions(options, frontmatter) {
+    mdxOptions(options, _frontmatter) {
       options.rehypePlugins = [
         ...(options.rehypePlugins ?? []),
         [rehypePrettyCode, { theme: "nord" }],

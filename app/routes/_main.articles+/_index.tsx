@@ -27,7 +27,7 @@ export async function loader() {
         writtenAt: new Date(frontmatter.writtenAt),
       } as Article;
     }),
-  );
+  ).then((articles) => articles.filter((article) => article.writtenAt.getTime() < Date.now()));
 }
 
 export const meta: MetaFunction = () => {

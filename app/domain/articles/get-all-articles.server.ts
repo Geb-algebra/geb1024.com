@@ -4,5 +4,7 @@
 import fs from "node:fs";
 
 export function getAllArticles() {
-  return fs.readdirSync(`${process.cwd()}/app/contents/articles`);
+  return fs
+    .readdirSync(`${process.cwd()}/app/contents/articles`)
+    .filter((name) => !name.startsWith("[D]"));
 }

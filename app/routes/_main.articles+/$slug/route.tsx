@@ -19,6 +19,9 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   }
   try {
     const { code, frontmatter } = await bundlePost(params.slug);
+    if (new Date(frontmatter.writtenAt).getTime() > Date.now()) {
+      throw new Response(null, { status: 404, statusText: "Not Found" });
+    }
     return { code, frontmatter };
   } catch (e) {
     // Errors thrown when a file is not found actually have a code property but Error type doesn't

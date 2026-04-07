@@ -8,7 +8,9 @@ const allKnowledgePiecesFile = path.join(
 );
 
 export async function updateAllKnowledgePieces() {
-  const knowledgePieceSlugs = fs.readdirSync(knowledgePiecesDir);
+  const knowledgePieceSlugs = fs
+    .readdirSync(knowledgePiecesDir)
+    .filter((slug) => !slug.startsWith("[D]"));
   const knowledgePiecesImportStatement = knowledgePieceSlugs
     .map((slug, i) => `import piece${i} from "../../contents/knowledge-pieces/${slug}/content";`)
     .join("\n");
@@ -21,7 +23,11 @@ export async function updateAllKnowledgePieces() {
 ${knowledgePiecesImportStatement}
 
 export function getAllKnowledgePieces() {
-  return [${knowledgePiecesArray}];
+  return [${knowledgePiecesArray}].filter(p => {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    return p.date < new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+  });;
 }
 `;
 
