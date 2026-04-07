@@ -1,9 +1,9 @@
 import { BookOpenIcon, BriefcaseBusinessIcon, TerminalSquareIcon } from "lucide-react";
 import type { HeadersFunction, MetaFunction } from "react-router";
 import LinkToSheet from "~/components/LinkToSheet";
+import CategoryTop from "~/components/layouts/CategoryTop";
 import SheetHeader from "~/components/SheetHeader";
 import WrittenAt from "~/components/WrittenAt";
-import CategoryTop from "~/components/layouts/CategoryTop";
 import { getAllArticles } from "~/domain/articles/get-all-articles.server";
 import { bundlePost } from "~/domain/articles/services.server";
 import type { Article } from "~/domain/models";

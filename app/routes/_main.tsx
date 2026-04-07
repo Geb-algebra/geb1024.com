@@ -1,5 +1,5 @@
 import { Slot } from "@radix-ui/react-slot";
-import { HomeIcon, MenuIcon, NotebookPenIcon, PuzzleIcon, User2Icon } from "lucide-react";
+import { HomeIcon, NotebookPenIcon, PuzzleIcon, User2Icon } from "lucide-react";
 import type { MetaFunction } from "react-router";
 import { Link, NavLink, Outlet } from "react-router";
 import GebMoon from "~/components/GebMoon";
@@ -43,7 +43,11 @@ function NavLinkIcon(props: { to: string; children: React.ReactNode }) {
 function ExternalServiceIcon({
   small = false,
   ...props
-}: { href: string; children: React.ReactNode; small?: boolean }) {
+}: {
+  href: string;
+  children: React.ReactNode;
+  small?: boolean;
+}) {
   return (
     <a
       href={props.href}

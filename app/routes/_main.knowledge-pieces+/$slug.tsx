@@ -1,11 +1,10 @@
 import LinkToPiece from "~/components/knowledge-pieces/LinkToPiece";
 import LinkToPieceList from "~/components/knowledge-pieces/LinkToPieceList";
-import type { Route } from "./+types/$slug";
-
 import Sheet from "~/components/Sheet";
 import SheetHeader from "~/components/SheetHeader";
 import WrittenAt from "~/components/WrittenAt";
 import { getAllKnowledgePieces } from "~/domain/knowledge-pieces/get-all-knowledge-pieces.server";
+import type { Route } from "./+types/$slug";
 
 export async function loader({ request, params }: Route.LoaderArgs) {
   const knowledgePiece = getAllKnowledgePieces().find((piece) => piece.slug === params.slug);

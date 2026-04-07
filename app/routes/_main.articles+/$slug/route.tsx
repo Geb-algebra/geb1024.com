@@ -1,18 +1,17 @@
 import { getMDXComponent } from "mdx-bundler/client/index.js";
 import React from "react";
-import { bundlePost } from "~/domain/articles/services.server";
-import type { Route } from "./+types/route";
-
 import { isRouteErrorResponse, useLoaderData, useRouteError } from "react-router";
 import Sheet from "~/components/Sheet";
 import SheetHeader from "~/components/SheetHeader";
 import Switch from "~/components/Switch";
-import WrittenAt from "~/components/WrittenAt";
 import { floating, ringOnFocusVisible } from "~/components/styles";
+import WrittenAt from "~/components/WrittenAt";
+import { bundlePost } from "~/domain/articles/services.server";
 import List from "~/routes/_main.articles+/$slug/List";
 import Paragraph from "~/routes/_main.articles+/$slug/Paragraph";
 import Quote from "~/routes/_main.articles+/$slug/Quote";
 import { cn } from "~/utils/css";
+import type { Route } from "./+types/route";
 
 export async function loader({ request, params }: Route.LoaderArgs) {
   if (!params.slug) {
@@ -23,7 +22,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     return { code, frontmatter };
   } catch (e) {
     // Errors thrown when a file is not found actually have a code property but Error type doesn't
-    // @ts-ignore - We will delete this route soon
+    // @ts-expect-error - We will delete this route soon
     if (e instanceof Error && (e.code ?? "") === "ENOENT") {
       throw new Response(null, { status: 404, statusText: "Not Found" });
     }

@@ -1,6 +1,6 @@
 import type { HeadersFunction, MetaFunction } from "react-router";
-import Sheet from "~/components/Sheet";
 import CategoryTop from "~/components/layouts/CategoryTop";
+import Sheet from "~/components/Sheet";
 
 export const headers: HeadersFunction = () => {
   return {

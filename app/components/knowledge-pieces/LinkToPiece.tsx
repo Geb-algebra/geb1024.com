@@ -1,4 +1,3 @@
-import { PuzzleIcon } from "lucide-react";
 import type { KnowledgePiece } from "~/domain/models";
 import LinkToSheet from "../LinkToSheet";
 import SheetHeader from "../SheetHeader";
