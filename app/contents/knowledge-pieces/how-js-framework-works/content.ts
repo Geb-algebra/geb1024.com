@@ -1,5 +1,7 @@
 import type { KnowledgePiece } from "~/domain/models";
-import slide from "./slide.svg";
+import { createKnowledgePieceAsset } from "../../../utils/assets";
+
+const asset = createKnowledgePieceAsset("how-js-framework-works");
 
 export default {
   title: "ブラウザでreactやvueが動く仕組み",
@@ -9,6 +11,6 @@ export default {
     "reactやvueがvite、web packといったトランスパイラでHTML、CSS、JavaScriptに変換されるからです。",
     "reactやvueは、そのままだと書きにくいHTML、CSS、JavaScriptを簡単に書けるようにしてくれるライブラリ、というわけです。",
   ],
-  figure: slide,
+  figure: asset("slide.svg"),
   related: ["spa-ssr"],
 } as KnowledgePiece;

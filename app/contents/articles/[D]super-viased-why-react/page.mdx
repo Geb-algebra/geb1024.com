@@ -1,0 +1,107 @@
+---
+title: "UIライブラリはReact - 思想強めなWeb技術選定"
+category: "tech"
+writtenAt: "2025-12-06"
+abstract: "I build an example for building a static, frequently updated website (like a blog) using React Router v7, with support for writing articles in Markdown. The focus is on creating a setup minimizes manual maintenance while maintaining the flexibility of React Router."
+---
+
+> -- 思想強めなWeb技術選定シリーズについて --
+> 
+> このシリーズでは、私が思う最強のWeb技術スタックと、それを選ぶ理由・思想を紹介します。
+> 
+> メインコンテンツは、「どの技術を選んだか」ではなく、「それを選ぶ思想・理由」です。
+> 技術選定をするときに一番知りたい「その技術の何が、他と比べて良いのか/悪いのか」を中心に書きます。
+> 
+> なので、ここで紹介した技術がどんな場面でもオススメ！ということではありません。
+> あらゆる状況で採用できる万能ツールというのはありません。
+> 作るもの・得意不得意・重視するもの・等々、状況に応じて最適なツールは変わります。
+> 
+> ここで紹介する技術を選ぶ理由・思想が読者の皆さんの状況とマッチしていたら採用して欲しいですし、逆にマッチしていなければ採用しない理由として使ってもらえればと思います。
+
+2025/12時点で、UIライブラリを選ぶならReactしかないと思います。
+以下、その理由を説明します。
+
+## 人気がありコミュニティが強い
+
+ReactはVue, Angular, Svelte, その他のUIライブラリに比べて圧倒的な利用者数を誇ります。
+
+<img src={contentAsset("image.png")} />
+
+利用者数が多いことには大きく3つの利点があります。
+
+- React自体が長くメンテナンスされる可能性が高い
+- 周辺の3rd partyライブラリが豊富かつ高品質
+- ネット上に情報が多い
+
+1. hoge
+2. fuga
+
+長期運用を想定するのであれば、UIライブラリを選ぶ上では、「オワコン化しないこと」が何より大事です。
+UIライブラリはアプリ全体の土台であり、後から変えることは容易ではありません。
+使っているUIライブラリや、その周辺の3rd partyライブラリのメンテナンスやサポートが終わるような事態はなんとしても避けたいです。
+
+長期運用を想定しなくても、
+
+正直この理由だけで選定してもいいくらい、これは重要です。
+
+
+なので現時点でユーザーを一番抱えているreactが素直に一番良い。
+
+同様の規模のライブラリだとvueがあるが、両方使ってみた感じ開発体験はreactの圧勝。
+
+何が良いかというと、
+
+まずはJavaScriptとほぼ同じ書き心地であること。
+React公式ドキュメントの序盤に書いてある通り
+
+React コンポーネントとは、マークアップを添えることができる JavaScript 関数です。
+https://ja.react.dev/learn/your-first-component
+
+コード
+
+```ts
+export default function Profile() {
+  return (
+    <img
+      src="https://i.imgur.com/MK3eW3Am.jpg"
+      alt="Katherine Johnson"
+    />
+  )
+}
+```
+
+そう、JavaScript関数なんですよ。
+他の高度な機能も、だいたいJavaScriptっぽく書けます。
+
+一方のvueは完全に独自構文です。
+
+```ts
+<script setup>
+import { ref } from 'vue'
+const count = ref(0)
+</script>
+
+<template>
+  <button @click="count++">Count is: {{ count }}</button>
+</template>
+
+<style scoped>
+button {
+  font-weight: bold;
+}
+</style>
+```
+
+Scriptの中はjsですが、Scriptで定義した変数がtemplateの中で使えることはvueを知らないとわかりません。さらにScriptの中の“count++”もよくわからないですね。
+
+JSに近いと何が良いかというと、コードが理解しやすいことです。
+JavaScriptを知ってれば、どう書いたらどう動くかすぐ覚えられますし、「こんな感じで動くかな？」って勘で書いたコードが結構動きます。
+
+Vueも決して悪いライブラリではなくて、フロントエンド初めての人がvueの方がわかりやすいというのはよく聞きます。
+でも結構書いてる人でvueを推してる人はほぼ見ません。
+慣れた時の開発体験の良さは圧倒的です。
+
+あとはコミュニティの大きさも段違いですね。
+router、UIコンポーネント、状態管理、フルスタックフレームワークなど主要なサードパーティライブラリについて、reactは全て活発にメンテされているものが複数ありますが、vueはだいたい一つだったり。
+
+## 10年以上広く利用され修正されているため、安定している（ただしServer Components周りを除いて）

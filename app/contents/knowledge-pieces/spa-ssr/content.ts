@@ -1,5 +1,7 @@
 import type { KnowledgePiece } from "~/domain/models";
-import slide from "./slide.svg";
+import { createKnowledgePieceAsset } from "../../../utils/assets";
+
+const asset = createKnowledgePieceAsset("spa-ssr");
 
 export default {
   title: "SPAと比較したSSRの利点",
@@ -13,6 +15,6 @@ export default {
     "また、JavaScriptを実行できないクローラーにもページが読めるので、SEOにも有利です。",
     "その後SPAと同様にJavaScriptを送ってJavaScriptありのページに置き換えるので、初期表示以外はほぼSPAと同じ挙動になります。",
   ],
-  figure: slide,
+  figure: asset("slide.svg"),
   related: ["how-js-framework-works"],
 } as KnowledgePiece;
