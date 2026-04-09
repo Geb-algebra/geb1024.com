@@ -12,3 +12,10 @@
 .dev.vars
 *storybook.log
 storybook-static
+
+# images in contents
+/app/contents/**/*.png
+/app/contents/**/*.jpg
+/app/contents/**/*.jpeg
+/app/contents/**/*.gif
+/app/contents/**/*.svg

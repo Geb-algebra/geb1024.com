@@ -10,10 +10,11 @@ import { bundlePost } from "~/domain/articles/services.server";
 import List from "~/routes/_main.articles+/$slug/List";
 import Paragraph from "~/routes/_main.articles+/$slug/Paragraph";
 import Quote from "~/routes/_main.articles+/$slug/Quote";
+import { createContentAsset } from "~/utils/assets";
 import { cn } from "~/utils/css";
 import type { Route } from "./+types/route";
 
-export async function loader({ request, params }: Route.LoaderArgs) {
+export async function loader({ params }: Route.LoaderArgs) {
   if (!params.slug) {
     throw new Response(null, { status: 404, statusText: "Not Found" });
   }
@@ -22,7 +23,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     if (new Date(frontmatter.writtenAt).getTime() > Date.now()) {
       throw new Response(null, { status: 404, statusText: "Not Found" });
     }
-    return { code, frontmatter };
+    return { code, frontmatter, slug: params.slug };
   } catch (e) {
     // Errors thrown when a file is not found actually have a code property but Error type doesn't
     // @ts-expect-error - We will delete this route soon
@@ -43,8 +44,11 @@ export const meta: Route.MetaFunction = ({ data, error }) => {
 export default function Article() {
   const loaderData = useLoaderData<typeof loader>();
 
-  const { code, frontmatter } = loaderData;
-  const Component = React.useMemo(() => getMDXComponent(code), [code]);
+  const { code, frontmatter, slug } = loaderData;
+  const Component = React.useMemo(
+    () => getMDXComponent(code, { contentAsset: createContentAsset("articles", slug) }),
+    [code, slug],
+  );
   const [summarized, setSummarized] = React.useState(false);
   return (
     <Sheet>
