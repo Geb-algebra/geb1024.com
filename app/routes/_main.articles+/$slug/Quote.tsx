@@ -2,7 +2,11 @@ import React from "react";
 
 export default function Quote(props: { children?: React.ReactNode }) {
   const children = React.Children.toArray(props.children).map((child) => {
-    if (React.isValidElement(child) && typeof child.type === "function" && child.type.name === "p")
+    if (
+      React.isValidElement<{ children?: React.ReactNode }>(child) &&
+      typeof child.type === "function" &&
+      child.type.name === "p"
+    )
       return <p key={child.key}>{child.props.children}</p>;
     return child;
   });

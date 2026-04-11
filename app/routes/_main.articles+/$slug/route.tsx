@@ -1,6 +1,7 @@
 import { getMDXComponent } from "mdx-bundler/client/index.js";
 import React from "react";
 import { isRouteErrorResponse, useLoaderData, useRouteError } from "react-router";
+import Image from "~/components/Image";
 import Sheet from "~/components/Sheet";
 import SheetHeader from "~/components/SheetHeader";
 import Switch from "~/components/Switch";
@@ -46,12 +47,12 @@ export default function Article() {
 
   const { code, frontmatter, slug } = loaderData;
   const Component = React.useMemo(
-    () => getMDXComponent(code, { contentAsset: createContentAsset("articles", slug) }),
+    () => getMDXComponent(code, { contentAsset: createContentAsset("articles", slug), Image }),
     [code, slug],
   );
   const [summarized, setSummarized] = React.useState(false);
   return (
-    <Sheet>
+    <Sheet className="grid gap-16">
       <SheetHeader title={frontmatter.title} category={frontmatter.category}>
         <div className="flex justify-between items-end mt-2">
           <WrittenAt date={new Date(frontmatter.writtenAt)} />
@@ -70,7 +71,9 @@ export default function Article() {
               <h1 className="font-bold text-geb-blue text-2xl mt-24 mb-12">{props.children}</h1>
             ),
             h2: (props) => (
-              <h2 className="font-bold text-geb-blue text-xl mt-12 mb-9">{props.children}</h2>
+              <h2 className="font-bold text-geb-blue text-xl mt-12 mb-9 w-full border-t border-border-color pt-4">
+                {props.children}
+              </h2>
             ),
             h3: (props) => (
               <h3 className="font-bold text-geb-blue text-lg mt-9 mb-6">{props.children}</h3>
@@ -93,6 +96,7 @@ export default function Article() {
             ul: (props) => <List {...props} ordered={false} />,
             ol: (props) => <List {...props} ordered={true} />,
             li: (props) => <li className="pl-2" {...props} />,
+            Image,
           }}
         />
       </div>
