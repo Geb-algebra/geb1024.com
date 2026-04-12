@@ -1,7 +1,6 @@
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
 import { HomeIcon, MenuIcon, NotebookPenIcon, PuzzleIcon, User2Icon } from "lucide-react";
-import type { MetaFunction } from "react-router";
 import { Link, NavLink, Outlet } from "react-router";
 import GebMoon from "~/components/GebMoon";
 import GitHub from "~/components/logos/GitHub";
@@ -11,16 +10,6 @@ import { floating, ringOnFocusVisible } from "~/components/styles";
 import { cn } from "~/utils/css";
 
 import styles from "./_main.module.css";
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Geb's Lab" },
-    {
-      name: "description",
-      content: "An engineer's knowledges about tech, communication, team building, etc.",
-    },
-  ];
-};
 
 type IconSlotProps = Omit<useRender.ComponentProps<"span">, "children" | "render"> & {
   children: React.ReactElement;

@@ -1,12 +1,14 @@
 import { BookOpenIcon, BriefcaseBusinessIcon, TerminalSquareIcon } from "lucide-react";
-import type { HeadersFunction, MetaFunction } from "react-router";
+import type { HeadersFunction } from "react-router";
 import LinkToSheet from "~/components/LinkToSheet";
 import CategoryTop from "~/components/layouts/CategoryTop";
 import SheetHeader from "~/components/SheetHeader";
+import SocialMetadata from "~/components/SocialMetadata";
 import WrittenAt from "~/components/WrittenAt";
 import { getAllArticles } from "~/domain/articles/get-all-articles.server";
 import { bundlePost } from "~/domain/articles/services.server";
 import type { Article } from "~/domain/models";
+import { SITE_DESCRIPTION, SITE_NAME } from "~/utils/social";
 import type { Route } from "./+types/_main._index";
 
 export const headers: HeadersFunction = () => {
@@ -30,10 +32,6 @@ export async function loader() {
   );
 }
 
-export const meta: MetaFunction = () => {
-  return [{ title: "Blog Posts" }];
-};
-
 function ArticleItem(props: { article: Article }) {
   return (
     <LinkToSheet to={`/articles/${props.article.slug}`} className="w-full">
@@ -47,14 +45,17 @@ function ArticleItem(props: { article: Article }) {
 export default function Page({ loaderData }: Route.ComponentProps) {
   loaderData.sort((a, b) => b.writtenAt.getTime() - a.writtenAt.getTime());
   return (
-    <CategoryTop title="Blog Posts">
-      <ul className="flex flex-col gap-12">
-        {loaderData.map((article, index) => (
-          <li key={article.slug} className={index % 2 === 0 ? "md:pr-24 flex" : "md:pl-24 flex"}>
-            <ArticleItem article={article} />
-          </li>
-        ))}
-      </ul>
-    </CategoryTop>
+    <>
+      <SocialMetadata title={SITE_NAME} description={SITE_DESCRIPTION} pathname="/" />
+      <CategoryTop title="Blog Posts">
+        <ul className="flex flex-col gap-12">
+          {loaderData.map((article, index) => (
+            <li key={article.slug} className={index % 2 === 0 ? "md:pr-24 flex" : "md:pl-24 flex"}>
+              <ArticleItem article={article} />
+            </li>
+          ))}
+        </ul>
+      </CategoryTop>
+    </>
   );
 }
