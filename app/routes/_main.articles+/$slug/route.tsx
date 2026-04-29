@@ -39,11 +39,18 @@ export async function loader({ params }: Route.LoaderArgs) {
 
 export default function Article({ loaderData }: Route.ComponentProps) {
   const { code, frontmatter, slug } = loaderData;
+  const contentAsset = React.useMemo(() => createContentAsset("articles", slug), [slug]);
   const Component = React.useMemo(
-    () => getMDXComponent(code, { contentAsset: createContentAsset("articles", slug), Image }),
-    [code, slug],
+    () => getMDXComponent(code, { contentAsset, Image }),
+    [code, contentAsset],
   );
   const [summarized, setSummarized] = React.useState(false);
+  const MarkdownImage = React.useCallback(
+    ({ src = "", alt = "", ...props }: React.ComponentPropsWithoutRef<"img">) => (
+      <Image {...props} src={resolveMarkdownImageSrc(src, contentAsset)} alt={alt} />
+    ),
+    [contentAsset],
+  );
   return (
     <>
       <SocialMetadata
@@ -98,6 +105,7 @@ export default function Article({ loaderData }: Route.ComponentProps) {
               ul: (props) => <List {...props} ordered={false} />,
               ol: (props) => <List {...props} ordered={true} />,
               li: (props) => <li className="pl-2" {...props} />,
+              img: MarkdownImage,
               Image,
             }}
           />
@@ -105,6 +113,13 @@ export default function Article({ loaderData }: Route.ComponentProps) {
       </Sheet>
     </>
   );
+}
+
+function resolveMarkdownImageSrc(src: string, contentAsset: (imageName: string) => string) {
+  if (src.startsWith("/") || src.startsWith("#") || /^[a-z][a-z0-9+.-]*:/i.test(src)) {
+    return src;
+  }
+  return contentAsset(src);
 }
 
 export function ErrorBoundary() {
