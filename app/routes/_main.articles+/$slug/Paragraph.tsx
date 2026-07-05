@@ -23,10 +23,22 @@ export default function Paragraph(props: { summarized: boolean; children?: React
     keyline = [...children.slice(0, index), `${sepChild.split("\n")[0]}\n`];
     rest = [...sepChild.split("\n").slice(1).join("\n"), ...children.slice(index + 1)];
   }
+  const restImages = rest.filter(isImageLikeElement);
   return (
     <p className="my-6 font-lg leading-7">
       <span className="text-text-main font-medium">{keyline}</span>
-      {props.summarized ? null : <span className="text-text-sub">{rest}</span>}
+      {props.summarized ? restImages : <span className="text-text-sub">{rest}</span>}
     </p>
   );
+}
+
+function isImageLikeElement(child: React.ReactNode) {
+  if (!React.isValidElement(child)) {
+    return false;
+  }
+  if (child.type === "img") {
+    return true;
+  }
+  const props = child.props as { src?: unknown; alt?: unknown };
+  return typeof props.src === "string" && typeof props.alt === "string";
 }
