@@ -1,6 +1,6 @@
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
-import { HomeIcon, MenuIcon, NotebookPenIcon, PuzzleIcon, User2Icon } from "lucide-react";
+import { HomeIcon, NotebookPenIcon, PuzzleIcon, User2Icon } from "lucide-react";
 import { Link, NavLink, Outlet } from "react-router";
 import GebMoon from "~/components/GebMoon";
 import GitHub from "~/components/logos/GitHub";

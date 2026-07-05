@@ -15,7 +15,4 @@ export default {
     // to serve as a static site, I need to set this to avoid __manifest not found
     mode: "initial",
   },
-  future: {
-    v8_viteEnvironmentApi: true,
-  },
 } satisfies Config;

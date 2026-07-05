@@ -4,7 +4,7 @@ import CategoryTop from "~/components/layouts/CategoryTop";
 import { getAllKnowledgePieces } from "~/domain/knowledge-pieces/get-all-knowledge-pieces.server";
 import type { Route } from "./+types/_index";
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader() {
   return getAllKnowledgePieces().map((piece) => ({
     slug: piece.slug,
     title: piece.title,

@@ -1,4 +1,3 @@
-import { BookOpenIcon, BriefcaseBusinessIcon, TerminalSquareIcon } from "lucide-react";
 import type { HeadersFunction } from "react-router";
 import LinkToSheet from "~/components/LinkToSheet";
 import CategoryTop from "~/components/layouts/CategoryTop";

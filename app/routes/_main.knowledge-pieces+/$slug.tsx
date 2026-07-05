@@ -6,7 +6,7 @@ import WrittenAt from "~/components/WrittenAt";
 import { getAllKnowledgePieces } from "~/domain/knowledge-pieces/get-all-knowledge-pieces.server";
 import type { Route } from "./+types/$slug";
 
-export async function loader({ request, params }: Route.LoaderArgs) {
+export async function loader({ params }: Route.LoaderArgs) {
   const knowledgePiece = getAllKnowledgePieces().find((piece) => piece.slug === params.slug);
   if (!knowledgePiece) {
     return null;
@@ -19,15 +19,15 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   };
 }
 
-export const meta: Route.MetaFunction = ({ data }) => {
-  if (!data) {
+export const meta: Route.MetaFunction = ({ loaderData }) => {
+  if (!loaderData) {
     return [{ title: "Not Found" }, { description: "The page you requested could not be found." }];
   }
   return [
-    { title: data.knowledgePiece.title },
+    { title: loaderData.knowledgePiece.title },
     {
       name: "description",
-      content: data.knowledgePiece.content.join(" "),
+      content: loaderData.knowledgePiece.content.join(" "),
     },
   ];
 };
