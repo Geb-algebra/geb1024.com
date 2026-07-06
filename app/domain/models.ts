@@ -1,4 +1,5 @@
 export type ArticleCategory = "books" | "tech" | "jobsCareers";
+export type ArticleKind = "article" | "note";
 
 export type Article = {
   slug: string;
@@ -6,6 +7,7 @@ export type Article = {
   category: ArticleCategory;
   abstract: string;
   writtenAt: Date;
+  kind: ArticleKind;
 };
 
 export type KnowledgePiece = {

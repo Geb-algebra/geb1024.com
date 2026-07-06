@@ -2,6 +2,7 @@ import fs from "node:fs";
 import { bundleMDX } from "mdx-bundler";
 import rehypePrettyCode from "rehype-pretty-code";
 import type { Article } from "~/domain/models";
+import { articleFromFrontmatter } from "./frontmatter.server";
 
 export async function bundlePost(slug: string) {
   const path = `${process.cwd()}/app/contents/articles/${slug}`;
@@ -37,7 +38,7 @@ export async function listAllArticles() {
   const articles: Article[] = await Promise.all(
     dirs.map(async (slug) => {
       const { frontmatter } = await bundlePost(slug);
-      return { slug, ...frontmatter } as Article;
+      return articleFromFrontmatter(slug, frontmatter);
     }),
   );
   articles.sort((a, b) => {

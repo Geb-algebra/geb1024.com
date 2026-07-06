@@ -1,0 +1,231 @@
+---
+title: "サーバー・クライアントを一体化する設計はAI駆動開発を遅らせる？"
+category: "tech"
+kind: "note"
+writtenAt: "2026-07-06"
+abstract: "近年のWebフレームワークは、サーバーとクライアントのコードを近づける方向に進んでいる。しかし、AI駆動開発では、変更速度の高いUIと高リスクな業務バックエンドを近づけると危険だ。本記事では、機能単位の凝集と統治境界の分離を両立する構成を考える。"
+---
+
+## 背景
+
+**近年のWebフレームワークは、サーバーとクライアントのコードを近づける方向に進んでいる。**
+React Router、Remix、Next.jsなどの近年のフレームワークでは、画面、データ取得、フォーム送信、サーバー処理を近い場所に置く設計が重視されている。たとえば、React RouterやRemixではloader/actionによって、画面に必要なデータ取得や更新処理をroute単位で定義できる。Next.js App Routerでは、Server ComponentsやServer Actionsによって、サーバー処理とUIを近い場所で扱える。
+
+**この流れは、UI実装における見通しの悪さを解決するためには合理的である。**
+従来のSPA + APIサーバー構成では、同じ機能に関わるコードが、フロントエンド、APIサーバー、DTO、型定義、バリデーション、ドキュメントなどに散りやすかった。画面の挙動を理解するために、複数の場所を行き来する必要がある。近年のフルスタック寄りフレームワークは、この問題に対して、画面とその画面に必要なサーバー処理を近づけることで、機能単位の理解を容易にしようとしている。
+
+**一方で、AI時代には、サーバーとクライアントを近づけすぎることに新しいリスクがある。**
+AIによる実装支援を前提にすると、すべてのコードを同じ変更単位・同じレビュー基準で扱うことは危険である。フロントエンドは変更頻度が高く、比較的リスクが小さい。表示崩れや操作性の問題は起きうるが、多くの場合、データ破壊や情報漏洩には直結しにくい。これに対して、バックエンドは認可、DB更新、監査ログ、課金、外部連携などを扱うため、変更頻度は低くても失敗時の影響が大きい。
+
+**そのため、AI時代には「コードを近づけること」と「変更ガバナンスを分けること」を両立する必要がある。**
+近年のフレームワークが解いているのは、主に開発体験や機能理解の問題である。しかし、AIにどこまで任せるか、人間がどこを厚くレビューするか、どの変更をどのCIゲートに通すか、というガバナンスの問題は別である。UIとサーバー処理を近づけるだけでは、このガバナンス境界は作れない。むしろ、便利さによって高リスクなバックエンド処理がフロントエンド側の変更に混ざる危険がある。
+
+## 課題・懸念
+
+**最大の課題は、リスクレベルの異なるコードが同じ変更単位に混ざることである。**
+フロントエンドは、AIに高い水準で任せ、レビューを軽くし、短いサイクルで変更したい。一方で、コアサーバーは、AIに任せる水準を下げ、人間の設計レビューやコードレビューを厚くし、テストや契約確認も強くしたい。この2つを同じPR、同じディレクトリ、同じレビュー基準で扱うと、どちらかに無理が出る。フロントに合わせるとバックエンドが危険になり、バックエンドに合わせるとフロントの変更速度が落ちる。
+
+**特に危険なのは、Server Actionsやroute actionを本物の業務バックエンドとして扱うことである。**
+Next.jsのServer ActionsやReact Router/Remixのactionは便利だが、そこに認可、DB更新、ドメイン不変条件、監査ログ、課金処理などを書き始めると、フロントエンドの画面変更とコア業務ロジックの変更が混ざる。実行場所としてはサーバーでも、統治上はフロントエンド領域として扱われがちである。そのため、便利な近接性が、結果として危険な密結合になる可能性がある。
+
+**一方で、昔ながらのSPA + APIサーバー分離に戻すだけでは、コードが散って見通しが悪くなる。**
+APIサーバーとフロントエンドを完全に横割りで分けると、同じ機能に関わるコードが遠くに分散する。画面、APIエンドポイント、DTO、バリデーション、ドメインロジック、エラー表示、フォーム処理が別々の場所に置かれ、機能単位で理解しにくくなる。これは人間にとってもAIにとっても不利である。変更時にどこを読めばよいかが曖昧になり、影響範囲も把握しづらくなる。
+
+**さらに、domain層のロジックをサーバーとクライアントで二重実装したくないという問題もある。**
+たとえば、値オブジェクト、入力検証、状態遷移、金額計算、日付範囲計算、UI上の操作可能性判定などは、サーバーとクライアントの両方で必要になることがある。これらを別々に実装すると、仕様差分が生まれやすい。同じルールを2回書くことになり、片方だけ修正される事故も起きる。TypeScriptで全体を実装するなら、共有可能なロジックは共有したい。
+
+**つまり、単純な「フルスタック統合」でも、単純な「API/Front横割り分離」でも不十分である。**
+フルスタック統合は、機能単位の見通しは良いが、ガバナンス境界を壊しやすい。API/Front横割り分離は、ガバナンス境界は作りやすいが、機能単位の見通しが悪くなりやすい。必要なのは、実行単位・統治単位としてはサーバーとクライアントを分けつつ、コード配置としては機能ごとに凝集させる構成である。
+
+## 解決策の概要
+
+**方針は、コアサーバーとクライアントを分離しつつ、コードは機能ごとに凝集させることである。**
+コアサーバーは、認可、DB更新、ドメイン不変条件、監査ログ、外部副作用などを持つ高リスク領域として独立させる。クライアント、および必要に応じたBFF/SSR層は、UIとUXのための低リスク領域として扱う。ただし、ディレクトリ構成は `api/` と `frontend/` の横割りを基本にするのではなく、`features/todo`、`features/project` のように機能単位で切る。
+
+**構成としては、lite版は `Core API + SPA`、UX重視版は `Core API + BFF/SSR + UI` とする。**
+lite版では、React RouterをSPAとして使い、ブラウザからCore APIを呼ぶ。構成が軽く、静的ホスティングもしやすく、フロントエンド変更をAIに任せやすい。UX重視版では、React Routerのloader/actionをBFF/SSR層として使い、サーバー側でCore APIを呼び、SSRやリダイレクト、画面単位のデータ集約を行う。どちらの場合も、Core APIが業務上の正しさの最終責任を持つ。
+
+**BFF/SSR層は、Core APIと統合されたバックエンドではなく、フロントエンド領域のサーバー実行レイヤーとして扱う。**
+BFF/SSR層はサーバーで動くが、統治上はフロントエンド側に属する。ここに置いてよいのは、SSR、認証状態に応じたリダイレクト、画面用データ集約、キャッシュ制御、Core API呼び出し、ViewModelへの変換などである。置いてはいけないのは、認可の最終判断、DB直接更新、ドメイン不変条件、課金、監査ログ、外部副作用である。
+
+**機能単位の凝集は、`vertical slice + runtime entrypoints` で実現する。**
+各機能ディレクトリの中に、共有domain、API contract、Core API実装、BFF実装、UI実装を置く。ただし、それぞれを自由にimportできるようにはしない。API rootは各機能のAPI entrypointだけをimportする。Web rootは各機能のUI/BFF entrypointだけをimportする。近くに置くことで機能理解を容易にしつつ、runtime別entrypointによって依存方向とガバナンス境界を守る。
+
+## 解決策の詳細
+
+**domain層は、共有可能な `domain-kernel` と、サーバー専用の `domain-server` に分ける。**
+`domain-kernel` には、ブラウザでも安全に動かせる純粋なロジックを置く。たとえば、値オブジェクト、状態遷移の候補計算、入力検証、金額計算、日付範囲計算、表示上の操作可能性判定などである。`domain-server` には、DB状態、認可、外部副作用、監査、課金、保存処理に関わる高リスクなロジックを置く。これにより、二重実装を避けながら、サーバーが最終責任を持つ構造を保てる。
+
+**クライアントで共有domainを使う場合、それは最終判断ではなくUXのための事前判断として扱う。**
+クライアント側で入力検証や状態遷移判定を行うことは、ユーザー体験を良くするために有効である。しかし、それはあくまで事前検証であり、業務上の正しさを保証するものではない。最終的な認可、保存可否、不変条件の検証はCore APIで必ず行う。クライアント側の判定は、ユーザーに早くフィードバックを返すためのものとして位置づける。
+
+**API契約は、domain objectではなく公開DTOとして定義する。**
+Core APIが内部で使うdomain objectをそのまま外部に公開すると、フロントエンドがドメイン内部構造に依存してしまう。そのため、API request/responseは公開用DTOとして定義する。DTO、Zod schema、OpenAPI定義、エラーコード、ページング形式などは `contract` に置く。API側もフロント側もこのcontractを参照するが、domainの内部実装には依存しない。
+
+**ディレクトリ構成は、機能単位を基本とする。**
+
+```txt
+apps/
+  api/
+    src/main.ts              # Core APIのcomposition root
+
+  web/
+    app/root.tsx
+    app/routes.ts            # React Routerのcomposition root
+
+features/
+  todo/
+    domain-kernel/
+      index.ts
+      todo.ts
+      todo-status.ts
+      todo-validation.ts
+
+    domain-server/
+      index.ts
+      todo-policy.ts
+      todo-invariants.ts
+
+    contract/
+      index.ts
+      todo.dto.ts
+      todo.schema.ts
+      todo.openapi.ts
+
+    api/
+      index.ts
+      todo.routes.ts         # Hono route
+      todo.handlers.ts
+      todo.service.ts
+      todo.repository.ts
+
+    bff/
+      index.ts
+      todo.loaders.ts        # React Router SSR/BFF用
+      todo.actions.ts
+
+    ui/
+      index.ts
+      TodoListPage.tsx
+      TodoEditor.tsx
+      useTodoForm.ts
+```
+
+**この構成では、rootは各機能のentrypointを統合するだけのcomposition rootになる。**
+`apps/api` は、各featureの `api` entrypointをimportしてCore APIのルーティングを構成する。`apps/web` は、各featureの `ui` や `bff` entrypointをimportしてReact Routerのルーティングを構成する。root側には業務ロジックを置かない。rootはあくまで、アプリケーション全体を組み立てる場所である。
+
+**SPA版とBFF/SSR版は、同じ機能構造のまま切り替えられる。**
+SPA版では、`ui` が生成API clientを使ってCore APIを直接呼ぶ。BFF/SSR版では、`bff` のloader/actionが生成API clientを使ってCore APIを呼び、`ui` はloader dataを受け取る。どちらの場合も、Core APIの内部実装には依存しない。React Routerを使うことで、SPAからBFF/SSRへの移行、またはその逆を比較的行いやすくなる。
+
+## 技術スタック
+
+**フロントエンドおよびBFF/SSR層には、React Routerを使う。**
+React Routerは、SPAとしても、loader/actionを持つBFF/SSR寄りの構成としても使える。そのため、lite版の `Core API + SPA` と、UX重視版の `Core API + BFF/SSR` を同じ設計思想で扱いやすい。画面単位のデータ取得、フォーム送信、リダイレクト、SSRを段階的に導入できる点が、この構成と相性がよい。
+
+**Core APIには、Honoを第一候補として使う。**
+Honoは軽量で、TypeScriptとの相性がよく、Web標準寄りの感覚でAPIを実装できる。Core APIでは、Honoを厚いアプリケーションフレームワークとして使うのではなく、薄いHTTP adapterとして扱う。Hono handlerには、入力検証、認証情報の取り出し、application service呼び出し、レスポンス変換だけを置く。業務ロジックはhandlerに書かず、application/domain層に置く。
+
+**API契約には、Zod + OpenAPIを使う。**
+request/response schemaをZodで定義し、それをもとにOpenAPIを生成する。フロントエンドおよびBFF/SSR層は、OpenAPIから生成したAPI clientを使ってCore APIを呼ぶ。これにより、Core APIの実装型を直接共有せず、公開契約を介して型安全に接続できる。TypeScriptの型共有の便利さを使いつつ、サーバー内部実装への依存を避ける。
+
+**DBアクセスには、TypeScript ORMまたはクエリビルダを使う。**
+候補としてはDrizzleなどが考えられる。DBアクセスは `api` または `infrastructure` 相当のserver-only領域に閉じ込める。`ui` や `bff` からrepositoryをimportしてはいけない。BFF/SSR層はサーバーで動くが、DBに直接触らず、Core APIを通してデータにアクセスする。
+
+**モノレポ構成では、package managerのworkspaceとexportsを使って境界を作る。**
+たとえば、各featureをpackageとして扱い、公開entrypointを `exports` で制限する。外部からは `./domain-kernel`、`./contract`、`./api`、`./bff`、`./ui` のような明示的entrypointだけをimportできるようにする。深いパスへのimportは禁止する。これにより、物理的には近くに置きつつ、依存境界を保てる。
+
+```json
+{
+  "name": "@app/todo",
+  "exports": {
+    "./domain-kernel": "./src/domain-kernel/index.ts",
+    "./contract": "./src/contract/index.ts",
+    "./api": "./src/api/index.ts",
+    "./bff": "./src/bff/index.ts",
+    "./ui": "./src/ui/index.ts"
+  }
+}
+```
+
+## 実装ルール
+
+**最重要ルールは、Core APIを迂回しないことである。**
+BFF/SSR層はサーバーで動くため、ついDBやserver-only domainを直接importしたくなる。しかし、それを許すとCore APIとフロントエンド領域の境界が崩れる。BFF/SSR層は、Core APIの利用者として振る舞う。DB更新、認可の最終判断、保存時の不変条件検証、監査ログ、外部副作用は、必ずCore API側に置く。
+
+**import可能な依存方向を明示的に制限する。**
+
+```txt
+allowed:
+  features/*/ui              -> features/*/domain-kernel
+  features/*/ui              -> features/*/contract
+  features/*/ui              -> packages/api-client
+
+  features/*/bff             -> features/*/domain-kernel
+  features/*/bff             -> features/*/contract
+  features/*/bff             -> packages/api-client
+
+  features/*/api             -> features/*/contract
+  features/*/api             -> features/*/domain-kernel
+  features/*/api             -> features/*/domain-server
+
+forbidden:
+  features/*/ui              -> features/*/api
+  features/*/ui              -> features/*/domain-server
+  features/*/ui              -> features/*/repository
+
+  features/*/bff             -> features/*/api
+  features/*/bff             -> features/*/domain-server
+  features/*/bff             -> features/*/repository
+
+  features/*/api             -> features/*/ui
+  features/*/api             -> features/*/bff
+```
+
+**`domain-kernel` は、ブラウザで安全に動く純粋ロジックだけに限定する。**
+`domain-kernel` に置いてよいものは、副作用がなく、手元のデータだけで判断でき、ブラウザに出しても問題ないルールである。たとえば、値オブジェクト、formatしない純粋な計算、入力検証、状態遷移の候補計算などである。置いてはいけないものは、DB状態に依存する判断、認可の最終判断、秘密情報を使う処理、外部サービスとの連携、監査や課金に関わるルールである。
+
+**`contract` は、外部利用者に約束するAPI仕様だけを持つ。**
+`contract` には、request DTO、response DTO、Zod schema、OpenAPI定義、エラーコード、ページング仕様などを置く。domain objectをそのまま公開しない。API側はdomain objectからDTOへ変換して返す。フロントエンド側はDTOを受け取り、必要に応じてViewModelへ変換する。これにより、domain内部の変更とフロントエンドの変更を切り離す。
+
+**Hono handlerには業務ロジックを書かない。**
+handlerはHTTP adapterであり、入力検証、認証情報の取り出し、application service呼び出し、レスポンス整形だけを行う。業務判断はapplication serviceやdomain-serverに置く。repositoryや外部サービス呼び出しも、handlerに直接書き込まず、明示的な依存としてapplication層から利用する。これにより、HTTPフレームワークに業務ロジックが癒着しにくくなる。
+
+**React Routerのloader/actionは、BFFとして扱う場合でもCore APIの薄い利用者にする。**
+loader/actionは、Core API呼び出し、認証状態に応じたリダイレクト、画面用データ整形、キャッシュ制御などを担う。DBやrepositoryを直接呼ばない。server-only domainをimportしない。画面固有の利便性を高めるための層であって、業務上の正しさを保証する層ではない。
+
+**AIに任せる範囲とレビュー基準をruntimeごとに変える。**
+`ui` と `bff` は比較的低リスク領域として扱い、AIによる実装支援を積極的に使う。レビューは画面差分、型、主要導線、E2E、アクセシビリティ、API契約違反の有無を中心にする。`api`、`domain-server`、`repository` は高リスク領域として扱い、人間レビュー、設計確認、認可確認、DB migration確認、契約テストを厚くする。`domain-kernel` は共有範囲が広いため、中リスク領域として扱い、変更影響に注意する。
+
+**CIでは、import境界、型、契約、テストを自動で検査する。**
+lintやカスタムboundary checkerで禁止importを検出する。TypeScript project referencesやworkspace設定で依存方向を明示する。OpenAPI schemaの差分を確認し、破壊的変更がある場合はレビューを強制する。Core APIには契約テストとapplication/domainテストを置く。UI/BFFには主要導線のE2Eとコンポーネントテストを置く。
+
+## 残る課題・懸念
+
+**最大の残課題は、`domain-kernel` の境界設計である。**
+共有したい気持ちが強いほど、`domain-kernel` に多くのロジックを入れたくなる。しかし、ここが膨らみすぎると、クライアントに出してはいけない判断が漏れる可能性がある。特に、認可、契約状態、在庫、課金、外部サービス状態、DB上の一貫性に依存する判断は危険である。`domain-kernel` は便利な共有置き場ではなく、ブラウザに出しても安全な純粋ルールの置き場として厳密に扱う必要がある。
+
+**BFF/SSR層がCore APIを侵食する危険は残る。**
+BFF/SSR層はサーバーで動くため、技術的にはDBやserver-only moduleをimportできてしまうことがある。そのため、ルールだけでなく、lint、exports、package境界、CIによって機械的に禁止する必要がある。ここを徹底しないと、BFFがいつの間にか第二のバックエンドになり、Core API分離の意味が薄れる。
+
+**機能単位凝集は、横断関心事の置き場所を難しくする。**
+認証、認可、監査ログ、通知、課金、検索、ファイル、権限、feature flagなどは、単一機能に閉じないことが多い。これらを各featureに散らすと重複し、共通層に寄せすぎると再び横割りになる。横断関心事については、共通基盤として切り出すものと、各featureのpolicyとして持つものを分ける必要がある。
+
+**OpenAPI契約を介することで、型共有の即時性は少し落ちる。**
+tRPCやHono RPCのように、サーバー実装型をそのままクライアントに伝える方式に比べると、OpenAPI + generated client は一段遠い。ただし、この距離は意図的なものである。Core APIを独立した契約境界として扱うためには、実装型を直接共有しない方がよい。DXの良さとガバナンス境界の硬さの間にはトレードオフがある。
+
+**SPA版とBFF/SSR版を完全に同一コードで切り替えることは難しい可能性がある。**
+React Routerによって構造上の切り替えはしやすいが、実際にはデータ取得位置、キャッシュ、認証、エラー処理、ローディング表現が変わる。したがって、最初から完全な自動切り替えを目指すより、同じfeature構造の中でSPA用とBFF/SSR用のentrypointを持てるようにする方が現実的である。
+
+**AI向けの境界ルールは、ドキュメントだけでなく機械的制約に落とし込む必要がある。**
+AIは近くにあるコードを参照し、使えそうなmoduleをimportしてしまう可能性がある。機能単位でコードを近づけるほど、その危険は大きくなる。そのため、AIに読ませるREADME、package exports、lint、CI、CODEOWNERS、PRテンプレート、review policyを組み合わせる必要がある。人間の設計意図だけではなく、AIが破れない境界として実装することが重要である。
+
+## まとめ
+
+**この設計の狙いは、フルスタック統合とサーバー・クライアント分離の良いところを両立することである。**
+近年のフレームワークが重視する機能単位の近接性は、人間にもAIにも有益である。一方で、AI時代には、変更リスクに応じたガバナンス境界がより重要になる。そこで、実行単位・統治単位としてはCore APIとFrontend/BFFを分け、コード配置としては機能単位に凝集させる。
+
+**最終的な形は、`Core API分離 + vertical slice + runtime entrypoints` である。**
+Core APIは高リスク領域として独立させる。Frontend/BFFは低リスク領域として高速に変更できるようにする。domainは共有可能な `domain-kernel` とサーバー専用の `domain-server` に分ける。API契約は `contract` に置き、OpenAPI + generated clientで接続する。各featureの中にAPI、BFF、UIを近くに置きながら、importルールとCIで境界を守る。
+
+**この構成は、AI時代のWebアプリケーションにおける「近接と分離の両立」を目指す設計である。**
+AIに任せやすい場所は任せる。人間が厚く見るべき場所は厚く見る。コードは機能単位で理解しやすくする。しかし、リスクの高い責務はCore APIに閉じ込める。このバランスを取ることで、開発速度、UX、保守性、セキュリティ、AI活用を同時に成立させることを目指す。

@@ -2,6 +2,7 @@ export const loader = () => {
   const robotText = `
 User-agent: *
 Allow: /
+Sitemap: https://geb1024.com/sitemap.xml
 `;
   return new Response(robotText, {
     status: 200,
