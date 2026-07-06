@@ -66,7 +66,7 @@ export default function Article({ loaderData }: Route.ComponentProps) {
       />
       <div className="grid gap-6">
         {frontmatter.kind === "note" ? <NoteDisclaimer /> : null}
-        <Sheet className="grid gap-16">
+        <Sheet className="grid grid-cols-[minmax(0,1fr)] gap-16">
           <SheetHeader title={frontmatter.title} category={frontmatter.category}>
             <div className="mt-2 flex justify-between items-end">
               <WrittenAt date={new Date(frontmatter.writtenAt)} />

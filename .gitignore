@@ -19,3 +19,5 @@ storybook-static
 /app/contents/**/*.jpeg
 /app/contents/**/*.gif
 /app/contents/**/*.svg
+
+.playwright-cli/
