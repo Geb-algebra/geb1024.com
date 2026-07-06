@@ -1,7 +1,6 @@
 import { getMDXComponent } from "mdx-bundler/client/index.js";
 import React from "react";
 import { isRouteErrorResponse, useRouteError } from "react-router";
-import ArticleKindBadge from "~/components/ArticleKindBadge";
 import NoteDisclaimer from "~/components/articles/NoteDisclaimer";
 import Image from "~/components/Image";
 import Sheet from "~/components/Sheet";
@@ -69,11 +68,8 @@ export default function Article({ loaderData }: Route.ComponentProps) {
         {frontmatter.kind === "note" ? <NoteDisclaimer /> : null}
         <Sheet className="grid gap-16">
           <SheetHeader title={frontmatter.title} category={frontmatter.category}>
-            <div className="flex justify-between items-end mt-2">
-              <div className="flex items-center gap-3">
-                <WrittenAt date={new Date(frontmatter.writtenAt)} />
-                <ArticleKindBadge kind={frontmatter.kind} />
-              </div>
+            <div className="mt-2 flex justify-between items-end">
+              <WrittenAt date={new Date(frontmatter.writtenAt)} />
               <Switch
                 actionName="Summarize"
                 state={summarized}

@@ -8,12 +8,12 @@ export default function NoteDisclaimer(props: { className?: string }) {
   return (
     <div
       className={cn(
-        "grid grid-cols-[auto_minmax(0,1fr)] gap-3 rounded-iconic-xl border border-border-color bg-base-color/70 px-4 py-3 text-sm leading-6 text-text-sub",
+        "grid min-w-0 grid-cols-[auto_minmax(0,1fr)] gap-3 rounded-iconic-xl border border-border-color bg-base-color/70 px-4 py-3 text-sm leading-6 text-text-sub",
         props.className,
       )}
     >
       <TriangleAlertIcon className="mt-0.5 size-5 text-geb-blue" />
-      <p>{NOTE_DISCLAIMER_TEXT}</p>
+      <p className="min-w-0">{NOTE_DISCLAIMER_TEXT}</p>
     </div>
   );
 }
